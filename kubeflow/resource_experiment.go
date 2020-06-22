@@ -29,19 +29,19 @@ func resourceKubeflowExperiment() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"created_at": {
-				Type:         schema.TypeString,
-				Computed:     true,
-				ForceNew:     true,
+				Type:     schema.TypeString,
+				Computed: true,
+				ForceNew: true,
 			},
 			"storage_state": {
-				Type:         schema.TypeString,
-				Computed:     true,
-				ForceNew:     true,
+				Type:     schema.TypeString,
+				Computed: true,
+				ForceNew: true,
 			},
 			"resources_reference": {
-				Type:         schema.TypeString,
-				Computed:     true,
-				ForceNew:     true,
+				Type:     schema.TypeString,
+				Computed: true,
+				ForceNew: true,
 			},
 		},
 	}
@@ -61,7 +61,7 @@ func resourceKubeflowExperimentCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	experimentParams := experiment_service.CreateExperimentParams{
-		Body: &apiExperiment,
+		Body:    &apiExperiment,
 		Context: context,
 	}
 
@@ -87,7 +87,7 @@ func resourceKubeflowExperimentRead(d *schema.ResourceData, meta interface{}) er
 	id := d.Id()
 
 	experimentParams := experiment_service.GetExperimentParams{
-		ID: id,
+		ID:      id,
 		Context: context,
 	}
 
@@ -113,7 +113,7 @@ func resourceKubeflowExperimentDelete(d *schema.ResourceData, meta interface{}) 
 	id := d.Id()
 
 	experimentParams := experiment_service.DeleteExperimentParams{
-		ID: id,
+		ID:      id,
 		Context: context,
 	}
 

@@ -20,7 +20,7 @@ type Config struct {
 
 type Meta struct {
 	Experiment *experiment_client.Experiment
-	Context context.Context
+	Context    context.Context
 }
 
 func (c *Config) Client() (*Meta, error) {
