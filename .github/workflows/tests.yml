@@ -20,12 +20,6 @@ jobs:
       - name: "go vet"
         run: go vet ./...
 
-      - name: Lint Code Base
-        uses: docker://github/super-linter:v2.1.1
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_ANSIBLE: false
-
       - name: "go test"
         run: |
           go test -v  ./...
