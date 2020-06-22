@@ -1,0 +1,25 @@
+name: "tests"
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+env:
+  tests_timeout: "2h"
+  golangci_lint_version: "v1.26"
+jobs:
+  test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@master
+
+      - name: "go vet"
+        run: go vet ./...
+
+      - name: "go test"
+        run: |
+          go test -v  ./...
