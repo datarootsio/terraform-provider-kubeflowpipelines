@@ -1,2 +1,2 @@
-# terraform-provider-kubeflow
-Terraform provider for Kubeflow API
+# terraform-provider-kubeflow-pipelines
+Terraform provider for Kubeflow Pipelines API
