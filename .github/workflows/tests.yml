@@ -20,12 +20,11 @@ jobs:
       - name: "go vet"
         run: go vet ./...
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v1
-        with:
-          # Optional: golangci-lint command line arguments.
-          args: --timeout=3m0s
-          version: ${{ env.golangci_lint_version }}
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v2.1.1
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ANSIBLE: false
 
       - name: "go test"
         run: |
