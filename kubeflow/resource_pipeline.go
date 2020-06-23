@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/go-openapi/runtime"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -290,7 +291,11 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 
 	resp, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
 	if err != nil {
-		return fmt.Errorf("unable to get experiment")
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
+		return fmt.Errorf("unable to get group pipeline: %s", err)
 	}
 
 	d.SetId(resp.Payload.ID)
