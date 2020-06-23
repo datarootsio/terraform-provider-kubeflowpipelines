@@ -17,6 +17,7 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"kubeflow_experiment": resourceKubeflowExperiment(),
+			"kubeflow_pipeline":   resourceKubeflowPipeline(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{
