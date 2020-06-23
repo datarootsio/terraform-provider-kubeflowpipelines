@@ -2,6 +2,7 @@ package kubeflow
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -93,7 +94,11 @@ func resourceKubeflowExperimentRead(d *schema.ResourceData, meta interface{}) er
 
 	resp, err := client.ExperimentService.GetExperiment(&experimentParams, nil)
 	if err != nil {
-		return fmt.Errorf("unable to get experiment")
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
+		return fmt.Errorf("unable to get experiment: %s", err)
 	}
 
 	d.SetId(resp.Payload.ID)

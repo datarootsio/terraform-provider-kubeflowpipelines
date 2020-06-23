@@ -8,6 +8,7 @@ import (
 	//	"github.com/Azure/go-autorest/autorest"
 	//	"github.com/hashicorp/terraform/httpclient"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/experiment_client"
+	"github.com/kubeflow/pipelines/backend/api/go_http_client/job_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client"
 )
@@ -24,6 +25,7 @@ type Meta struct {
 	Experiment     *experiment_client.Experiment
 	Pipeline       *pipeline_client.Pipeline
 	PipelineUpload *pipeline_upload_client.PipelineUpload
+	Job            *job_client.Job
 	Context        context.Context
 }
 
@@ -60,6 +62,12 @@ func (c *Config) createClients(host string, scheme string) (*Meta, error) {
 	pipelineUploadTransport.Schemes = []string{scheme}
 
 	meta.PipelineUpload = pipeline_upload_client.NewHTTPClientWithConfig(nil, pipelineUploadTransport)
+
+	jobTransport := job_client.DefaultTransportConfig()
+	jobTransport.Host = host
+	jobTransport.Schemes = []string{scheme}
+
+	meta.Job = job_client.NewHTTPClientWithConfig(nil, jobTransport)
 
 	return &meta, nil
 }
