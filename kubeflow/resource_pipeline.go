@@ -246,7 +246,7 @@ func kubeflowCreatePipelineVersionFromUrl(d *schema.ResourceData, meta interface
 
 	resourceReferences := pipeline_model.APIResourceReference{
 		Key: &pipeline_model.APIResourceKey{
-			ID: pipeline_id,
+			ID:   pipeline_id,
 			Type: "PIPELINE",
 		},
 		Relationship: "OWNER",
@@ -254,7 +254,7 @@ func kubeflowCreatePipelineVersionFromUrl(d *schema.ResourceData, meta interface
 
 	apiPipeline := pipeline_model.APIPipelineVersion{
 		CodeSourceURL: url,
-		Name: computedName,
+		Name:          computedName,
 		PackageURL: &pipeline_model.APIURL{
 			PipelineURL: url,
 		},
