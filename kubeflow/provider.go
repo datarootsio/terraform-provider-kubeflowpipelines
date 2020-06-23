@@ -17,6 +17,7 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"kubeflow_experiment": resourceKubeflowExperiment(),
+			"kubeflow_pipeline":   resourceKubeflowPipeline(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{
@@ -32,7 +33,7 @@ func Provider() terraform.ResourceProvider {
 func providerConfigure(p *schema.Provider) schema.ConfigureFunc {
 	return func(d *schema.ResourceData) (interface{}, error) {
 		config := Config{
-			Host: d.Get("host").(string),
+			Host:             d.Get("host").(string),
 			terraformVersion: p.TerraformVersion,
 		}
 

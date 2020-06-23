@@ -8,6 +8,8 @@ import (
 	//	"github.com/Azure/go-autorest/autorest"
 	//	"github.com/hashicorp/terraform/httpclient"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/experiment_client"
+	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client"
+	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client"
 )
 
 const TerraformProviderUserAgent = "terraform-provider-kubeflow"
@@ -19,8 +21,10 @@ type Config struct {
 }
 
 type Meta struct {
-	Experiment *experiment_client.Experiment
-	Context context.Context
+	Experiment     *experiment_client.Experiment
+	Pipeline       *pipeline_client.Pipeline
+	PipelineUpload *pipeline_upload_client.PipelineUpload
+	Context        context.Context
 }
 
 func (c *Config) Client() (*Meta, error) {
@@ -44,6 +48,18 @@ func (c *Config) createClients(host string, scheme string) (*Meta, error) {
 	experimentTransport.Schemes = []string{scheme}
 
 	meta.Experiment = experiment_client.NewHTTPClientWithConfig(nil, experimentTransport)
+
+	pipelineTransport := pipeline_client.DefaultTransportConfig()
+	pipelineTransport.Host = host
+	pipelineTransport.Schemes = []string{scheme}
+
+	meta.Pipeline = pipeline_client.NewHTTPClientWithConfig(nil, pipelineTransport)
+
+	pipelineUploadTransport := pipeline_upload_client.DefaultTransportConfig()
+	pipelineUploadTransport.Host = host
+	pipelineUploadTransport.Schemes = []string{scheme}
+
+	meta.PipelineUpload = pipeline_upload_client.NewHTTPClientWithConfig(nil, pipelineUploadTransport)
 
 	return &meta, nil
 }
