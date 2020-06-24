@@ -283,9 +283,15 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 	context := meta.(*Meta).Context
 
 	id := d.Id()
+	versionId := d.Get("version_id").(string)
 
 	pipelineParams := pipeline_service.GetPipelineParams{
 		ID:      id,
+		Context: context,
+	}
+
+	pipelineVersionParams := pipeline_service.GetPipelineVersionParams{
+		VersionID:      versionId,
 		Context: context,
 	}
 
@@ -295,7 +301,19 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("unable to get group pipeline: %s", err)
+		return fmt.Errorf("unable to get pipeline: %s", err)
+	}
+
+	respVersion, err := client.PipelineService.GetPipelineVersion(&pipelineVersionParams, nil)
+	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.Set("version_id","")
+			d.Set("version","")
+		} else {
+			return fmt.Errorf("unable to get pipeline version: %s", err)
+		}
+	} else {
+		d.Set("version_id", respVersion.Payload.ID)
 	}
 
 	d.SetId(resp.Payload.ID)
