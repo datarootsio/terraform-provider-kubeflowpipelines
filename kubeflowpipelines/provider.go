@@ -1,4 +1,4 @@
-package kubeflow
+package kubeflowpipelines
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"

@@ -1,4 +1,4 @@
-package kubeflow
+package kubeflowpipelines
 
 import (
 	"encoding/base64"
