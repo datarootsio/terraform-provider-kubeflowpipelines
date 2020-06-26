@@ -118,10 +118,13 @@ func kubeflowCreatePipelineFromFile(d *schema.ResourceData, meta interface{}) er
 
 	fileName, err := decodeFile(file)
 	if err != nil {
-		return fmt.Errorf("unable to write file: %s", err)
+		return fmt.Errorf("unable to decode file: %s", err)
 	}
 	defer os.Remove(fileName)
 	decodedFile, err := os.Open(fileName)
+	if err != nil {
+		return fmt.Errorf("unable to open file: %s", err)
+	}
 
 	pipelineParams := pipeline_upload_service.UploadPipelineParams{
 		Context:    context,
@@ -166,10 +169,13 @@ func kubeflowCreatePipelineVersionFromFile(d *schema.ResourceData, meta interfac
 
 	fileName, err := decodeFile(file)
 	if err != nil {
-		return fmt.Errorf("unable to write file: %s", err)
+		return fmt.Errorf("unable to decode file: %s", err)
 	}
 	defer os.Remove(fileName)
 	decodedFile, err := os.Open(fileName)
+	if err != nil {
+		return fmt.Errorf("unable to open file: %s", err)
+	}
 
 	pipelineParams := pipeline_upload_service.UploadPipelineVersionParams{
 		Context:    context,
