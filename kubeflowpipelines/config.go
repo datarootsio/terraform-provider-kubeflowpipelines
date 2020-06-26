@@ -1,4 +1,4 @@
-package kubeflow
+package kubeflowpipelines
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client"
 )
 
-const TerraformProviderUserAgent = "terraform-provider-kubeflow"
+const TerraformProviderUserAgent = "terraform-provider-kubeflowpipelines"
 
 type Config struct {
 	Token            string

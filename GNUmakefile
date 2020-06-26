@@ -1,5 +1,5 @@
 WEBSITE_REPO=github.com/hashicorp/terraform-website
-PKG_NAME=kubeflow-pipelines
+PKG_NAME=kubeflowpipelines
 GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
 
 default: build test

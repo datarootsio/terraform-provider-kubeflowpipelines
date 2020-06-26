@@ -1,4 +1,4 @@
-package kubeflow
+package kubeflowpipelines
 
 import (
 	"fmt"
@@ -7,9 +7,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 )
 
-func dataSourceKubeflowExperiment() *schema.Resource {
+func dataSourceKubeflowPipelinesExperiment() *schema.Resource {
 	return &schema.Resource{
-		Read: dataSourceKubeflowExperimentRead,
+		Read: dataSourceKubeflowPipelinesExperimentRead,
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -27,7 +27,7 @@ func dataSourceKubeflowExperiment() *schema.Resource {
 	}
 }
 
-func dataSourceKubeflowExperimentRead(d *schema.ResourceData, meta interface{}) error {
+func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Experiment
 
 	name := d.Get("name").(string)
