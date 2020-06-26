@@ -16,13 +16,13 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"kubeflow_pipelines_experiment": resourceKubeflowPipelinesExperiment(),
-			"kubeflow_pipelines_pipeline":   resourceKubeflowPipelinesPipeline(),
-			"kubeflow_pipelines_job":        resourceKubeflowPipelinesJob(),
+			"kubeflowpipelines_experiment": resourceKubeflowPipelinesExperiment(),
+			"kubeflowpipelines_pipeline":   resourceKubeflowPipelinesPipeline(),
+			"kubeflowpipelines_job":        resourceKubeflowPipelinesJob(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{
-			"kubeflow_pipelines_experiment": dataSourceKubeflowPipelinesExperiment(),
+			"kubeflowpipelines_experiment": dataSourceKubeflowPipelinesExperiment(),
 		},
 	}
 
