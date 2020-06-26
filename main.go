@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/datarootsio/terraform-provider-kubeflow-pipelines/kubeflowpipelines"
+	"github.com/datarootsio/terraform-provider-kubeflowpipelines/kubeflowpipelines"
 	"github.com/hashicorp/terraform-plugin-sdk/plugin"
 )
 
