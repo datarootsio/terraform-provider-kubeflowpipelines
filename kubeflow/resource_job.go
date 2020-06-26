@@ -108,13 +108,13 @@ func resourceKubeflowJob() *schema.Resource {
 										Type:         schema.TypeString,
 										Required:     true,
 										ForceNew:     true,
-										ValidateFunc: validation.ValidateRFC3339TimeString,
+										ValidateFunc: validation.IsRFC3339Time,
 									},
 									"end_time": {
 										Type:         schema.TypeString,
 										Required:     true,
 										ForceNew:     true,
-										ValidateFunc: validation.ValidateRFC3339TimeString,
+										ValidateFunc: validation.IsRFC3339Time,
 									},
 									"cron": {
 										Type:     schema.TypeString,
@@ -135,13 +135,13 @@ func resourceKubeflowJob() *schema.Resource {
 										Type:         schema.TypeString,
 										Required:     true,
 										ForceNew:     true,
-										ValidateFunc: validation.ValidateRFC3339TimeString,
+										ValidateFunc: validation.IsRFC3339Time,
 									},
 									"end_time": {
 										Type:         schema.TypeString,
 										Required:     true,
 										ForceNew:     true,
-										ValidateFunc: validation.ValidateRFC3339TimeString,
+										ValidateFunc: validation.IsRFC3339Time,
 									},
 									"interval_seconds": {
 										Type:     schema.TypeInt,
@@ -223,6 +223,7 @@ func resourceKubeflowJobCreate(d *schema.ResourceData, meta interface{}) error {
 	d.Set("experiment_id", experimentId)
 	d.Set("service_account", serviceAccount)
 	d.Set("max_concurrency", maxConcurrency)
+	
 	d.SetId(resp.Payload.ID)
 
 	return resourceKubeflowJobRead(d, meta)
