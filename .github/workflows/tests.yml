@@ -17,9 +17,35 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@master
 
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.0-beta2
+
+      - name: "Download terraform k8s provider"
+        run: |
+          wget https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v0.7.7/terraform-provider-k8s_0.7.7_linux_amd64.tar.gz
+          tar xvzf terraform-provider-k8s_0.7.7_linux_amd64.tar.gz && chmod +x terraform-provider-k8s
+          mkdir -p ~/.terraform.d/plugins
+          mv terraform-provider-k8s ~/.terraform.d/plugins
+
       - name: "go vet"
         run: go vet ./...
 
-      - name: "go test"
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+          # Optional: golangci-lint command line arguments.
+          args: --timeout=3m0s
+          version: ${{ env.golangci_lint_version }}
+
+      - name: "install k3s"
+        env:
+          K3S_KUBECONFIG_MODE: 644
+          KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
-          go test -v  ./...
+          curl -sfL https://get.k3s.io | sh -s - --disable traefik --disable servicelb
+          kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+
+      - name: "install kubeflow"
+        run: terraform apply -auto-approve
+        working-directory: ./tests/kubeflow_setup
