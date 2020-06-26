@@ -1,4 +1,4 @@
-module github.com/datarootsio/terraform-provider-kubeflow
+module github.com/datarootsio/terraform-provider-kubeflowpipelines
 
 go 1.14
 
