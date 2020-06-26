@@ -1,13 +1,3 @@
-terraform {
-  required_version = "~> 0.13"
-  required_providers {
-      k8s = {
-          source = "banzaicloud/k8s"
-          version = "0.7.7"
-      }
-  }
-}
-
 provider "kubernetes" {}
 
 provider "k8s" {}
