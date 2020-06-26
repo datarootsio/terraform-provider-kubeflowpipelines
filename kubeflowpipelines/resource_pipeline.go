@@ -15,12 +15,12 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client/pipeline_upload_service"
 )
 
-func resourceKubeflowPipeline() *schema.Resource {
+func resourceKubeflowPipelinesPipeline() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceKubeflowPipelineCreate,
-		Read:   resourceKubeflowPipelineRead,
-		Update: resourceKubeflowPipelineUpdate,
-		Delete: resourceKubeflowPipelineDelete,
+		Create: resourceKubeflowPipelinesPipelineCreate,
+		Read:   resourceKubeflowPipelinesPipelineRead,
+		Update: resourceKubeflowPipelinesPipelineUpdate,
+		Delete: resourceKubeflowPipelinesPipelineDelete,
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -86,7 +86,7 @@ func decodeFile(b64 string) (string, error) {
 	return file.Name(), err
 }
 
-func resourceKubeflowPipelineCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesPipelineCreate(d *schema.ResourceData, meta interface{}) error {
 	file := d.Get("file_base64").(string)
 
 	if file != "" {
@@ -96,7 +96,7 @@ func resourceKubeflowPipelineCreate(d *schema.ResourceData, meta interface{}) er
 	}
 }
 
-func resourceKubeflowPipelineUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesPipelineUpdate(d *schema.ResourceData, meta interface{}) error {
 	file := d.Get("file_base64").(string)
 
 	if file != "" {
@@ -151,7 +151,7 @@ func kubeflowCreatePipelineFromFile(d *schema.ResourceData, meta interface{}) er
 	if version != "" {
 		return kubeflowCreatePipelineVersionFromFile(d, meta)
 	} else {
-		return resourceKubeflowPipelineRead(d, meta)
+		return resourceKubeflowPipelinesPipelineRead(d, meta)
 	}
 }
 
@@ -192,7 +192,7 @@ func kubeflowCreatePipelineVersionFromFile(d *schema.ResourceData, meta interfac
 	d.Set("version", version)
 	d.Set("version_id", resp.Payload.ID)
 
-	return resourceKubeflowPipelineRead(d, meta)
+	return resourceKubeflowPipelinesPipelineRead(d, meta)
 }
 
 func kubeflowCreatePipelineFromUrl(d *schema.ResourceData, meta interface{}) error {
@@ -236,7 +236,7 @@ func kubeflowCreatePipelineFromUrl(d *schema.ResourceData, meta interface{}) err
 	if version != "" {
 		return kubeflowCreatePipelineVersionFromUrl(d, meta)
 	} else {
-		return resourceKubeflowPipelineRead(d, meta)
+		return resourceKubeflowPipelinesPipelineRead(d, meta)
 	}
 }
 
@@ -281,10 +281,10 @@ func kubeflowCreatePipelineVersionFromUrl(d *schema.ResourceData, meta interface
 	d.Set("version", version)
 	d.Set("version_id", resp.Payload.ID)
 
-	return resourceKubeflowPipelineRead(d, meta)
+	return resourceKubeflowPipelinesPipelineRead(d, meta)
 }
 
-func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Pipeline
 	context := meta.(*Meta).Context
 
@@ -297,8 +297,8 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	pipelineVersionParams := pipeline_service.GetPipelineVersionParams{
-		VersionID:      versionId,
-		Context: context,
+		VersionID: versionId,
+		Context:   context,
 	}
 
 	resp, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
@@ -313,8 +313,8 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 	respVersion, err := client.PipelineService.GetPipelineVersion(&pipelineVersionParams, nil)
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
-			d.Set("version_id","")
-			d.Set("version","")
+			d.Set("version_id", "")
+			d.Set("version", "")
 		} else {
 			return fmt.Errorf("unable to get pipeline version: %s", err)
 		}
@@ -329,7 +329,7 @@ func resourceKubeflowPipelineRead(d *schema.ResourceData, meta interface{}) erro
 	return nil
 }
 
-func resourceKubeflowPipelineDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesPipelineDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Pipeline
 	context := meta.(*Meta).Context
 

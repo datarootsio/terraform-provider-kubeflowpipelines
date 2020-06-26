@@ -11,11 +11,11 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/job_model"
 )
 
-func resourceKubeflowJob() *schema.Resource {
+func resourceKubeflowPipelinesJob() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceKubeflowJobCreate,
-		Read:   resourceKubeflowJobRead,
-		Delete: resourceKubeflowJobDelete,
+		Create: resourceKubeflowPipelinesJobCreate,
+		Read:   resourceKubeflowPipelinesJobRead,
+		Delete: resourceKubeflowPipelinesJobDelete,
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -158,7 +158,7 @@ func resourceKubeflowJob() *schema.Resource {
 	}
 }
 
-func resourceKubeflowJobCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Job
 	context := meta.(*Meta).Context
 
@@ -223,13 +223,13 @@ func resourceKubeflowJobCreate(d *schema.ResourceData, meta interface{}) error {
 	d.Set("experiment_id", experimentId)
 	d.Set("service_account", serviceAccount)
 	d.Set("max_concurrency", maxConcurrency)
-	
+
 	d.SetId(resp.Payload.ID)
 
-	return resourceKubeflowJobRead(d, meta)
+	return resourceKubeflowPipelinesJobRead(d, meta)
 }
 
-func resourceKubeflowJobRead(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesJobRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Job
 	context := meta.(*Meta).Context
 
@@ -257,7 +257,7 @@ func resourceKubeflowJobRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceKubeflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesJobDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Job
 	context := meta.(*Meta).Context
 

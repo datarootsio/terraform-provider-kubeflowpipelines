@@ -10,11 +10,11 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/experiment_model"
 )
 
-func resourceKubeflowExperiment() *schema.Resource {
+func resourceKubeflowPipelinesExperiment() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceKubeflowExperimentCreate,
-		Read:   resourceKubeflowExperimentRead,
-		Delete: resourceKubeflowExperimentDelete,
+		Create: resourceKubeflowPipelinesExperimentCreate,
+		Read:   resourceKubeflowPipelinesExperimentRead,
+		Delete: resourceKubeflowPipelinesExperimentDelete,
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -48,7 +48,7 @@ func resourceKubeflowExperiment() *schema.Resource {
 	}
 }
 
-func resourceKubeflowExperimentCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Experiment
 	context := meta.(*Meta).Context
 
@@ -78,10 +78,10 @@ func resourceKubeflowExperimentCreate(d *schema.ResourceData, meta interface{}) 
 	d.Set("storage_state", resp.Payload.StorageState)
 	d.SetId(resp.Payload.ID)
 
-	return resourceKubeflowExperimentRead(d, meta)
+	return resourceKubeflowPipelinesExperimentRead(d, meta)
 }
 
-func resourceKubeflowExperimentRead(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Experiment
 	context := meta.(*Meta).Context
 
@@ -111,7 +111,7 @@ func resourceKubeflowExperimentRead(d *schema.ResourceData, meta interface{}) er
 	return nil
 }
 
-func resourceKubeflowExperimentDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceKubeflowPipelinesExperimentDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*Meta).Experiment
 	context := meta.(*Meta).Context
 
