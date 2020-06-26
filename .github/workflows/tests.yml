@@ -47,6 +47,8 @@ jobs:
           kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 
       - name: "install kubeflow"
+        env:
+          KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
           terraform init
           terraform apply -auto-approve
