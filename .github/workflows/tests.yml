@@ -19,7 +19,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.12.26
+          terraform_version: 0.13.0-beta2
 
       - name: "Download terraform k8s provider"
         run: |
@@ -27,6 +27,7 @@ jobs:
           tar xvzf terraform-provider-k8s_0.7.7_linux_amd64.tar.gz && chmod +x terraform-provider-k8s
           mkdir -p ~/.terraform.d/plugins
           mv terraform-provider-k8s ~/.terraform.d/plugins
+          terraform providers mirror ~/.terraform.d/plugins
 
       - name: "go vet"
         run: go vet ./...
