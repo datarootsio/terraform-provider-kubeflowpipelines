@@ -10,8 +10,8 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/experiment_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/job_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client"
-	"github.com/kubeflow/pipelines/backend/api/go_http_client/run_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client"
+	"github.com/kubeflow/pipelines/backend/api/go_http_client/run_client"
 )
 
 const TerraformProviderUserAgent = "terraform-provider-kubeflowpipelines"

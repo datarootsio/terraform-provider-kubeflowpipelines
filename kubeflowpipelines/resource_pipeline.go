@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/go-openapi/runtime"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/customdiff"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client/pipeline_service"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_model"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client/pipeline_upload_service"
@@ -23,7 +23,7 @@ func resourceKubeflowPipelinesPipeline() *schema.Resource {
 		Update: resourceKubeflowPipelinesPipelineUpdate,
 		Delete: resourceKubeflowPipelinesPipelineDelete,
 		CustomizeDiff: customdiff.All(
-			customdiff.ComputedIf("version_id", func (d *schema.ResourceDiff, meta interface{}) bool {
+			customdiff.ComputedIf("version_id", func(d *schema.ResourceDiff, meta interface{}) bool {
 				return d.HasChange("version") || d.HasChange("file_base64") || d.HasChange("url")
 			}),
 		),
@@ -323,10 +323,10 @@ func resourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interfac
 			return fmt.Errorf("unable to get pipeline version: %s", err)
 		}
 	} else {
-		if strings.Contains(respVersion.Payload.Name, version){
+		if strings.Contains(respVersion.Payload.Name, version) {
 			d.Set("version_id", respVersion.Payload.ID)
-		}else{
-			d.Set("version_id","")
+		} else {
+			d.Set("version_id", "")
 		}
 	}
 
