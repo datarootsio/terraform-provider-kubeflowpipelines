@@ -10,6 +10,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/customdiff"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client/pipeline_service"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_model"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client/pipeline_upload_service"
@@ -21,6 +22,11 @@ func resourceKubeflowPipelinesPipeline() *schema.Resource {
 		Read:   resourceKubeflowPipelinesPipelineRead,
 		Update: resourceKubeflowPipelinesPipelineUpdate,
 		Delete: resourceKubeflowPipelinesPipelineDelete,
+		CustomizeDiff: customdiff.All(
+			customdiff.ComputedIf("version_id", func (d *schema.ResourceDiff, meta interface{}) bool {
+				return d.HasChange("version") || d.HasChange("file_base64") || d.HasChange("url")
+			}),
+		),
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -38,21 +44,18 @@ func resourceKubeflowPipelinesPipeline() *schema.Resource {
 			"url": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ForceNew:     true,
 				ExactlyOneOf: []string{"file_base64", "url"},
 				ValidateFunc: validation.IsURLWithHTTPorHTTPS,
 			},
 			"file_format": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ForceNew:     true,
 				ValidateFunc: validation.StringInSlice([]string{"zip", "tar.gz", "yaml"}, true),
 				RequiredWith: []string{"file_base64"},
 			},
 			"file_base64": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ForceNew:     true,
 				ExactlyOneOf: []string{"file_base64", "url"},
 				ValidateFunc: validation.StringIsBase64,
 			},
@@ -98,7 +101,6 @@ func resourceKubeflowPipelinesPipelineCreate(d *schema.ResourceData, meta interf
 
 func resourceKubeflowPipelinesPipelineUpdate(d *schema.ResourceData, meta interface{}) error {
 	file := d.Get("file_base64").(string)
-
 	if file != "" {
 		return kubeflowCreatePipelineVersionFromFile(d, meta)
 	} else {
@@ -288,17 +290,13 @@ func resourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interfac
 	client := meta.(*Meta).Pipeline
 	context := meta.(*Meta).Context
 
+	version := d.Get("version").(string)
+
 	id := d.Id()
-	versionId := d.Get("version_id").(string)
 
 	pipelineParams := pipeline_service.GetPipelineParams{
 		ID:      id,
 		Context: context,
-	}
-
-	pipelineVersionParams := pipeline_service.GetPipelineVersionParams{
-		VersionID: versionId,
-		Context:   context,
 	}
 
 	resp, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
@@ -310,16 +308,26 @@ func resourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interfac
 		return fmt.Errorf("unable to get pipeline: %s", err)
 	}
 
+	versionId := resp.Payload.DefaultVersion.ID
+
+	pipelineVersionParams := pipeline_service.GetPipelineVersionParams{
+		VersionID: versionId,
+		Context:   context,
+	}
+
 	respVersion, err := client.PipelineService.GetPipelineVersion(&pipelineVersionParams, nil)
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
 			d.Set("version_id", "")
-			d.Set("version", "")
 		} else {
 			return fmt.Errorf("unable to get pipeline version: %s", err)
 		}
 	} else {
-		d.Set("version_id", respVersion.Payload.ID)
+		if strings.Contains(respVersion.Payload.Name, version){
+			d.Set("version_id", respVersion.Payload.ID)
+		}else{
+			d.Set("version_id","")
+		}
 	}
 
 	d.SetId(resp.Payload.ID)
