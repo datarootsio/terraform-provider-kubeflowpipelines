@@ -11,6 +11,7 @@ import (
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/job_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_client"
 	"github.com/kubeflow/pipelines/backend/api/go_http_client/pipeline_upload_client"
+	"github.com/kubeflow/pipelines/backend/api/go_http_client/run_client"
 )
 
 const TerraformProviderUserAgent = "terraform-provider-kubeflowpipelines"
@@ -26,6 +27,7 @@ type Meta struct {
 	Pipeline       *pipeline_client.Pipeline
 	PipelineUpload *pipeline_upload_client.PipelineUpload
 	Job            *job_client.Job
+	Run            *run_client.Run
 	Context        context.Context
 }
 
@@ -68,6 +70,12 @@ func (c *Config) createClients(host string, scheme string) (*Meta, error) {
 	jobTransport.Schemes = []string{scheme}
 
 	meta.Job = job_client.NewHTTPClientWithConfig(nil, jobTransport)
+
+	runTransport := run_client.DefaultTransportConfig()
+	runTransport.Host = host
+	runTransport.Schemes = []string{scheme}
+
+	meta.Run = run_client.NewHTTPClientWithConfig(nil, runTransport)
 
 	return &meta, nil
 }

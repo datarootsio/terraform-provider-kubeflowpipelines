@@ -170,7 +170,7 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 	maxConcurrency := int64(d.Get("max_concurrency").(int))
 	experimentId := d.Get("experiment_id").(string)
 
-	pipelineSpec := expandPipelineSpec(d.Get("pipeline_spec").([]interface{}))
+	pipelineSpec := jobExpandPipelineSpec(d.Get("pipeline_spec").([]interface{}))
 	trigger := expandTrigger(d.Get("trigger").([]interface{}))
 
 	apiJob := job_model.APIJob{
@@ -278,7 +278,7 @@ func resourceKubeflowPipelinesJobDelete(d *schema.ResourceData, meta interface{}
 	return nil
 }
 
-func expandPipelineSpec(input []interface{}) *job_model.APIPipelineSpec {
+func jobExpandPipelineSpec(input []interface{}) *job_model.APIPipelineSpec {
 	if len(input) == 0 {
 		return nil
 	}
