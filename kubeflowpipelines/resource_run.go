@@ -180,12 +180,12 @@ func resourceKubeflowPipelinesRunDelete(d *schema.ResourceData, meta interface{}
 
 	id := d.Id()
 
-	runParams := run_service.DeleteRunParams{
+	runParams := run_service.ArchiveRunParams{
 		ID:      id,
 		Context: context,
 	}
 
-	_, err := client.RunService.DeleteRun(&runParams, nil)
+	_, err := client.RunService.ArchiveRun(&runParams, nil)
 	if err != nil {
 		return fmt.Errorf("unable to delete job: %s", err)
 	}
