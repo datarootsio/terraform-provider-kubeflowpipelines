@@ -210,13 +210,15 @@ func runExpandPipelineSpec(meta interface{}, input []interface{}) (string, *run_
 		pipelineVersionID = string(v.(string))
 	}
 
-	pipelineID, err := getParentPipeline(meta, pipelineVersionID)
+	pipelineID, template,err := getParentPipeline(meta, pipelineVersionID)
 
 	if err != nil {
 		return "", nil, fmt.Errorf("unable to get pipeline version: %s", err)
 	}
 
 	result.PipelineID = pipelineID
+
+	result.PipelineManifest = template
 
 	if v, ok := values["parameters"]; ok {
 
@@ -236,26 +238,39 @@ func runExpandPipelineSpec(meta interface{}, input []interface{}) (string, *run_
 	return pipelineVersionID, &result, nil
 }
 
-func getParentPipeline(meta interface{}, pipelineVersionID string) (string, error) {
+func getParentPipeline(meta interface{}, pipelineVersionID string) (string, string, error) {
 	client := meta.(*Meta).Pipeline
 	context := meta.(*Meta).Context
+	
+	pipelineID := ""
 
 	pipelineParams := pipeline_service.GetPipelineVersionParams{
 		VersionID: pipelineVersionID,
 		Context:   context,
 	}
 
+	pipelineTemplateParams := pipeline_service.GetPipelineVersionTemplateParams{
+		VersionID: pipelineVersionID,
+		Context:   context,
+	}
+
 	resp, err := client.PipelineService.GetPipelineVersion(&pipelineParams, nil)
 	if err != nil {
-		return "", fmt.Errorf("unable to get pipeline version: %s", err)
+		return "", "", fmt.Errorf("unable to get pipeline version: %s", err)
+	}
+
+	respTemplate, err := client.PipelineService.GetPipelineVersionTemplate(&pipelineTemplateParams, nil)
+	if err != nil {
+		return "", "", fmt.Errorf("unable to get pipeline version template: %s", err)
 	}
 
 	for reference := range resp.Payload.ResourceReferences {
 		if resp.Payload.ResourceReferences[reference].Relationship == "OWNER" && resp.Payload.ResourceReferences[reference].Key.Type == "PIPELINE" {
-			return resp.Payload.ResourceReferences[reference].Key.ID, nil
+			pipelineID = resp.Payload.ResourceReferences[reference].Key.ID
+			break
 		}
 	}
 
-	return "", fmt.Errorf("unable to get parent pipeline ID: %s", err)
+	return pipelineID, respTemplate.Payload.Template, fmt.Errorf("unable to get parent pipeline ID: %s", err)
 
 }
