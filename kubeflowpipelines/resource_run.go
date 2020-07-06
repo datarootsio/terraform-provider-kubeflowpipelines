@@ -210,7 +210,7 @@ func runExpandPipelineSpec(meta interface{}, input []interface{}) (string, *run_
 		pipelineVersionID = string(v.(string))
 	}
 
-	pipelineID, template,err := getParentPipeline(meta, pipelineVersionID)
+	pipelineID, template, err := getParentPipeline(meta, pipelineVersionID)
 
 	if err != nil {
 		return "", nil, fmt.Errorf("unable to get pipeline version: %s", err)
@@ -241,7 +241,7 @@ func runExpandPipelineSpec(meta interface{}, input []interface{}) (string, *run_
 func getParentPipeline(meta interface{}, pipelineVersionID string) (string, string, error) {
 	client := meta.(*Meta).Pipeline
 	context := meta.(*Meta).Context
-	
+
 	pipelineID := ""
 
 	pipelineParams := pipeline_service.GetPipelineVersionParams{
