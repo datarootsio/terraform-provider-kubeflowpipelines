@@ -20,12 +20,15 @@ func dataSourceKubeflowPipelinesExperiment() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 				ExactlyOneOf: []string{"name", "id"},
 			},
-
 			"id": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
 				ExactlyOneOf: []string{"name", "id"},
+			},
+			"description": {
+				Type:         schema.TypeString,
+				Computed:     true,
 			},
 		},
 	}
