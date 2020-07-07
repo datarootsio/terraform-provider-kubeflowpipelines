@@ -30,12 +30,16 @@ func TestAccDataSourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 func testAccDataSourceKubeflowPipelinesExperimentBasic(experimentName string) string {
 	return fmt.Sprintf(`
 resource "kubeflowpipelines_experiment" "test" {
-  name          = "%s"
-  description   = "Description %s"
+  name        = "%s"
+  description = "Description %s"
 }
 
 data "kubeflowpipelines_experiment" "test" {
   id = kubeflowpipelines_experiment.test.id
 }
-`, experimentName, experimentName)
+
+data "kubeflowpipelines_experiment" "test2" {
+	name = "%s"
+}
+`, experimentName, experimentName, experimentName)
 }

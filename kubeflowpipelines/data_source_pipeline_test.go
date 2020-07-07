@@ -40,5 +40,9 @@ resource "kubeflowpipelines_pipeline" "test" {
 data "kubeflowpipelines_pipeline" "test" {
   id = kubeflowpipelines_pipeline.test.id
 }
-`, pipelineName, pipelineName)
+
+data "kubeflowpipelines_pipeline" "test" {
+  name = %s
+}
+`, pipelineName, pipelineName, pipelineName)
 }
