@@ -14,8 +14,9 @@ module "kubeflow" {
   source  = "datarootsio/kubeflow/module"
   version = "~>0.0"
 
-  ingress_gateway_ip = "10.20.30.40"
-  use_cert_manager   = true
-  domain_name        = "foo.local"
-  letsencrypt_email = "foo@bar.local"
+  ingress_gateway_ip  = "10.20.30.40"
+  use_cert_manager    = true
+  domain_name         = "foo.local"
+  letsencrypt_email   = "foo@bar.local"
+  kubeflow_components = ["pipelines"]
 }
