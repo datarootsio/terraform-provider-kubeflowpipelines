@@ -50,6 +50,7 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 			if item.Name == name {
 				d.SetId(item.ID)
 				d.Set("name",item.Name)
+				d.Set("description",item.Description)
 				experimentFound = true
 				break
 			}
@@ -74,6 +75,7 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 		}
 		d.SetId(resp.Payload.ID)
 		d.Set("name",resp.Payload.Name)
+		d.Set("description",resp.Payload.Description)
 	}
 	return nil
 }
