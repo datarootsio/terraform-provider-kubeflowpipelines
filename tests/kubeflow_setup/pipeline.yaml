@@ -1,0 +1,746 @@
+"apiVersion": |-
+  argoproj.io/v1alpha1
+"kind": |-
+  Workflow
+"metadata":
+  "annotations":
+    "pipelines.kubeflow.org/pipeline_spec": |-
+      {"description": "Shows how to use dsl.Condition() and dsl.ExitHandler().", "name": "Conditional execution pipeline with exit handler"}
+  "generateName": |-
+    conditional-execution-pipeline-with-exit-handler-
+"spec":
+  "arguments":
+    "parameters":
+      - {name: key}
+  "entrypoint": |-
+    conditional-execution-pipeline-with-exit-handler
+  "onExit": |-
+    print-op
+  "serviceAccountName": |-
+    pipeline-runner
+  "templates":
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-output
+            "value": |-
+              {{tasks.get-random-int-op.outputs.parameters.get-random-int-op-output}}
+        "dependencies":
+        - |-
+          get-random-int-op
+        "name": |-
+          condition-3
+        "template": |-
+          condition-3
+        "when": |-
+          {{tasks.get-random-int-op.outputs.parameters.get-random-int-op-output}} > 5
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-output
+            "value": |-
+              {{tasks.get-random-int-op.outputs.parameters.get-random-int-op-output}}
+        "dependencies":
+        - |-
+          get-random-int-op
+        "name": |-
+          condition-4
+        "template": |-
+          condition-4
+        "when": |-
+          {{tasks.get-random-int-op.outputs.parameters.get-random-int-op-output}} <= 5
+      - "name": |-
+          get-random-int-op
+        "template": |-
+          get-random-int-op
+    "name": |-
+      condition-2
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-output
+            "value": |-
+              {{inputs.parameters.get-random-int-op-output}}
+        "name": |-
+          print-op-2
+        "template": |-
+          print-op-2
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-output
+    "name": |-
+      condition-3
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-output
+            "value": |-
+              {{inputs.parameters.get-random-int-op-output}}
+        "name": |-
+          print-op-3
+        "template": |-
+          print-op-3
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-output
+    "name": |-
+      condition-4
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-2-output
+            "value": |-
+              {{tasks.get-random-int-op-2.outputs.parameters.get-random-int-op-2-output}}
+        "dependencies":
+        - |-
+          get-random-int-op-2
+        "name": |-
+          condition-6
+        "template": |-
+          condition-6
+        "when": |-
+          {{tasks.get-random-int-op-2.outputs.parameters.get-random-int-op-2-output}} > 15
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-2-output
+            "value": |-
+              {{tasks.get-random-int-op-2.outputs.parameters.get-random-int-op-2-output}}
+        "dependencies":
+        - |-
+          get-random-int-op-2
+        "name": |-
+          condition-7
+        "template": |-
+          condition-7
+        "when": |-
+          {{tasks.get-random-int-op-2.outputs.parameters.get-random-int-op-2-output}} <= 15
+      - "name": |-
+          get-random-int-op-2
+        "template": |-
+          get-random-int-op-2
+    "name": |-
+      condition-5
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-2-output
+            "value": |-
+              {{inputs.parameters.get-random-int-op-2-output}}
+        "name": |-
+          print-op-4
+        "template": |-
+          print-op-4
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-2-output
+    "name": |-
+      condition-6
+  - "dag":
+      "tasks":
+      - "arguments":
+          "parameters":
+          - "name": |-
+              get-random-int-op-2-output
+            "value": |-
+              {{inputs.parameters.get-random-int-op-2-output}}
+        "name": |-
+          print-op-5
+        "template": |-
+          print-op-5
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-2-output
+    "name": |-
+      condition-7
+  - "dag":
+      "tasks":
+      - "name": |-
+          fail-op
+        "template": |-
+          fail-op
+    "name": |-
+      condition-8
+  - "dag":
+      "tasks":
+      - "name": |-
+          exit-handler-1
+        "template": |-
+          exit-handler-1
+    "name": |-
+      conditional-execution-pipeline-with-exit-handler
+  - "dag":
+      "tasks":
+      - "dependencies":
+        - |-
+          flip-coin-op
+        "name": |-
+          condition-2
+        "template": |-
+          condition-2
+        "when": |-
+          "{{tasks.flip-coin-op.outputs.parameters.flip-coin-op-output}}" == "heads"
+      - "dependencies":
+        - |-
+          flip-coin-op
+        "name": |-
+          condition-5
+        "template": |-
+          condition-5
+        "when": |-
+          "{{tasks.flip-coin-op.outputs.parameters.flip-coin-op-output}}" == "tails"
+      - "dependencies":
+        - |-
+          flip-coin-op
+        "name": |-
+          condition-8
+        "template": |-
+          condition-8
+        "when": |-
+          "{{tasks.flip-coin-op.outputs.parameters.flip-coin-op-output}}" == "tails"
+      - "name": |-
+          flip-coin-op
+        "template": |-
+          flip-coin-op
+    "name": |-
+      exit-handler-1
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        Failing the run to demonstrate that exit handler still gets executed.
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - "def fail_op(message):\n    \"\"\"Fails.\"\"\"\n    import sys\n    print(message)\
+        \    \n    sys.exit(1)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog='Fail\
+        \ op', description='Fails.')\n_parser.add_argument(\"--message\", dest=\"\
+        message\", type=str, required=True, default=argparse.SUPPRESS)\n_parsed_args\
+        \ = vars(_parser.parse_args())\n_output_files = _parsed_args.pop(\"_output_paths\"\
+        , [])\n\n_outputs = fail_op(**_parsed_args)\n\nif not hasattr(_outputs, '__getitem__')\
+        \ or isinstance(_outputs, str):\n    _outputs = [_outputs]\n\n_output_serializers\
+        \ = [\n\n]\n\nimport os\nfor idx, output_file in enumerate(_output_files):\n\
+        \    try:\n        os.makedirs(os.path.dirname(output_file))\n    except OSError:\n\
+        \        pass\n    with open(output_file, 'w') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Fails.", "inputs": [{"name": "message"}], "name": "Fail op"}
+    "name": |-
+      fail-op
+  - "container":
+      "args":
+      - |-
+        ----output-paths
+      - |-
+        /tmp/outputs/Output/data
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def flip_coin_op()  :
+            """Flip a coin and output heads or tails randomly."""
+            import random
+            result = random.choice(['heads', 'tails'])
+            print(result)
+            return result
+
+        def _serialize_str(str_value: str) -> str:
+            if not isinstance(str_value, str):
+                raise TypeError('Value "{}" has type "{}" instead of str.'.format(str(str_value), str(type(str_value))))
+            return str_value
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Flip coin op', description='Flip a coin and output heads or tails randomly.')
+        _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = flip_coin_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+            _serialize_str,
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Flip a coin and output heads or tails randomly.", "name": "Flip coin op", "outputs": [{"name": "Output", "type": "String"}]}
+    "name": |-
+      flip-coin-op
+    "outputs":
+      "artifacts":
+      - "name": |-
+          flip-coin-op-output
+        "path": |-
+          /tmp/outputs/Output/data
+      "parameters":
+      - "name": |-
+          flip-coin-op-output
+        "valueFrom":
+          "path": |-
+            /tmp/outputs/Output/data
+  - "container":
+      "args":
+      - |-
+        --minimum
+      - |-
+        0
+      - |-
+        --maximum
+      - |-
+        9
+      - |-
+        ----output-paths
+      - |-
+        /tmp/outputs/Output/data
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def get_random_int_op(minimum , maximum )  :
+            """Generate a random number between minimum and maximum (inclusive)."""
+            import random
+            result = random.randint(minimum, maximum)
+            print(result)
+            return result
+
+        def _serialize_int(int_value: int) -> str:
+            if isinstance(int_value, str):
+                return int_value
+            if not isinstance(int_value, int):
+                raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+            return str(int_value)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Get random int op', description='Generate a random number between minimum and maximum (inclusive).')
+        _parser.add_argument("--minimum", dest="minimum", type=int, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("--maximum", dest="maximum", type=int, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = get_random_int_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+            _serialize_int,
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Generate a random number between minimum and maximum (inclusive).", "inputs": [{"name": "minimum", "type": "Integer"}, {"name": "maximum", "type": "Integer"}], "name": "Get random int op", "outputs": [{"name": "Output", "type": "Integer"}]}
+    "name": |-
+      get-random-int-op
+    "outputs":
+      "artifacts":
+      - "name": |-
+          get-random-int-op-output
+        "path": |-
+          /tmp/outputs/Output/data
+      "parameters":
+      - "name": |-
+          get-random-int-op-output
+        "valueFrom":
+          "path": |-
+            /tmp/outputs/Output/data
+  - "container":
+      "args":
+      - |-
+        --minimum
+      - |-
+        10
+      - |-
+        --maximum
+      - |-
+        19
+      - |-
+        ----output-paths
+      - |-
+        /tmp/outputs/Output/data
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def get_random_int_op(minimum , maximum )  :
+            """Generate a random number between minimum and maximum (inclusive)."""
+            import random
+            result = random.randint(minimum, maximum)
+            print(result)
+            return result
+
+        def _serialize_int(int_value: int) -> str:
+            if isinstance(int_value, str):
+                return int_value
+            if not isinstance(int_value, int):
+                raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+            return str(int_value)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Get random int op', description='Generate a random number between minimum and maximum (inclusive).')
+        _parser.add_argument("--minimum", dest="minimum", type=int, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("--maximum", dest="maximum", type=int, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = get_random_int_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+            _serialize_int,
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Generate a random number between minimum and maximum (inclusive).", "inputs": [{"name": "minimum", "type": "Integer"}, {"name": "maximum", "type": "Integer"}], "name": "Get random int op", "outputs": [{"name": "Output", "type": "Integer"}]}
+    "name": |-
+      get-random-int-op-2
+    "outputs":
+      "artifacts":
+      - "name": |-
+          get-random-int-op-2-output
+        "path": |-
+          /tmp/outputs/Output/data
+      "parameters":
+      - "name": |-
+          get-random-int-op-2-output
+        "valueFrom":
+          "path": |-
+            /tmp/outputs/Output/data
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        Exit handler has worked!
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def print_op(message ):
+            """Print a message."""
+            print(message)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Print op', description='Print a message.')
+        _parser.add_argument("--message", dest="message", type=str, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = print_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Print a message.", "inputs": [{"name": "message", "type": "String"}], "name": "Print op"}
+    "name": |-
+      print-op
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        heads and {{inputs.parameters.get-random-int-op-output}} > 5!
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def print_op(message ):
+            """Print a message."""
+            print(message)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Print op', description='Print a message.')
+        _parser.add_argument("--message", dest="message", type=str, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = print_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-output
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Print a message.", "inputs": [{"name": "message", "type": "String"}], "name": "Print op"}
+    "name": |-
+      print-op-2
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        heads and {{inputs.parameters.get-random-int-op-output}} <= 5!
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def print_op(message ):
+            """Print a message."""
+            print(message)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Print op', description='Print a message.')
+        _parser.add_argument("--message", dest="message", type=str, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = print_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-output
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Print a message.", "inputs": [{"name": "message", "type": "String"}], "name": "Print op"}
+    "name": |-
+      print-op-3
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        tails and {{inputs.parameters.get-random-int-op-2-output}} > 15!
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def print_op(message ):
+            """Print a message."""
+            print(message)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Print op', description='Print a message.')
+        _parser.add_argument("--message", dest="message", type=str, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = print_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-2-output
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Print a message.", "inputs": [{"name": "message", "type": "String"}], "name": "Print op"}
+    "name": |-
+      print-op-4
+  - "container":
+      "args":
+      - |-
+        --message
+      - |-
+        tails and {{inputs.parameters.get-random-int-op-2-output}} <= 15!
+      "command":
+      - |-
+        python3
+      - |-
+        -u
+      - |-
+        -c
+      - |
+        def print_op(message ):
+            """Print a message."""
+            print(message)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Print op', description='Print a message.')
+        _parser.add_argument("--message", dest="message", type=str, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+        _output_files = _parsed_args.pop("_output_paths", [])
+
+        _outputs = print_op(**_parsed_args)
+
+        if not hasattr(_outputs, '__getitem__') or isinstance(_outputs, str):
+            _outputs = [_outputs]
+
+        _output_serializers = [
+
+        ]
+
+        import os
+        for idx, output_file in enumerate(_output_files):
+            try:
+                os.makedirs(os.path.dirname(output_file))
+            except OSError:
+                pass
+            with open(output_file, 'w') as f:
+                f.write(_output_serializers[idx](_outputs[idx]))
+      "image": |-
+        tensorflow/tensorflow:1.13.2-py3
+    "inputs":
+      "parameters":
+      - "name": |-
+          get-random-int-op-2-output
+    "metadata":
+      "annotations":
+        "pipelines.kubeflow.org/component_spec": |-
+          {"description": "Print a message.", "inputs": [{"name": "message", "type": "String"}], "name": "Print op"}
+    "name": |-
+      print-op-5
