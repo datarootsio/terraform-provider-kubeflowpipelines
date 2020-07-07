@@ -29,9 +29,14 @@ func TestAccDataSourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 
 func testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName string) string {
 	return fmt.Sprintf(`
+data "local_file" "pipeline_yaml" {
+	filename = "${path.module}/pipeline.yaml"
+}
+
 resource "kubeflowpipelines_pipeline" "test" {
   name          = "%s"
   description   = "Description %s"
+  file_base64   = data.local_file.pipeline_yaml.content_base64
 }
 
 data "kubeflowpipelines_pipeline" "test" {
