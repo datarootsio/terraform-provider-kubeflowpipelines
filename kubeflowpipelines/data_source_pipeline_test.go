@@ -48,7 +48,7 @@ data "local_file" "pipeline_yaml" {
 resource "kubeflowpipelines_pipeline" "test" {
   name          = "%s"
   description   = "Description %s"
-  file_base64   = %s
+  file_base64   = "%s"
 }
 
 data "kubeflowpipelines_pipeline" "test" {
