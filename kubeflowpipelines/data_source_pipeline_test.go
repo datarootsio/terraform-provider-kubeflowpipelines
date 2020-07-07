@@ -32,7 +32,7 @@ func TestAccDataSourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 }
 
 func testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName string) string {
-	f, _ := os.Open("./tests/kubeflow_setup/pipeline.yaml")
+	f, _ := os.Open("../tests/kubeflow_setup/pipeline.yaml")
 	// Read entire JPG into byte slice.
 	reader := bufio.NewReader(f)
 	content, _ := ioutil.ReadAll(reader)
