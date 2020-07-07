@@ -26,6 +26,10 @@ func dataSourceKubeflowPipelinesPipeline() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 				ExactlyOneOf: []string{"name", "id"},
 			},
+			"description": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -40,21 +44,23 @@ func dataSourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interf
 	if id == "" {
 		resp, err := client.PipelineService.ListPipelines(nil, nil)
 		if err != nil {
-			return fmt.Errorf("unable to get list of experiments: %s", name)
+			return fmt.Errorf("unable to get list of pipelines: %s", name)
 		}
 
-		experimentFound := false
+		pipelineFound := false
 
 		for _, item := range resp.Payload.Pipelines {
 			if item.Name == name {
 				d.SetId(item.ID)
-				experimentFound = true
+				d.Set("name", item.Name)
+				d.Set("description", item.Description)
+				pipelineFound = true
 				break
 			}
 		}
 
-		if !experimentFound {
-			return fmt.Errorf("unable to get experiment: %s", name)
+		if !pipelineFound {
+			return fmt.Errorf("unable to get pipeline: %s", name)
 		}
 	} else {
 		pipelineParams := pipeline_service.GetPipelineParams{
@@ -62,7 +68,7 @@ func dataSourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interf
 			Context: context,
 		}
 
-		_, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
+		resp, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
 		if err != nil {
 			if strings.Contains(err.Error(), "404") {
 				d.SetId("")
@@ -70,6 +76,10 @@ func dataSourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interf
 			}
 			return fmt.Errorf("unable to get pipeline: %s", err)
 		}
+
+		d.SetId(resp.Payload.ID)
+		d.Set("name", resp.Payload.Name)
+		d.Set("description", resp.Payload.Description)
 	}
 
 	return nil

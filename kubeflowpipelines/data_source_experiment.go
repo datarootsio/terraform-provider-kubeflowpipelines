@@ -27,8 +27,8 @@ func dataSourceKubeflowPipelinesExperiment() *schema.Resource {
 				ExactlyOneOf: []string{"name", "id"},
 			},
 			"description": {
-				Type:         schema.TypeString,
-				Computed:     true,
+				Type:     schema.TypeString,
+				Computed: true,
 			},
 		},
 	}
