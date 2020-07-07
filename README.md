@@ -1,7 +1,7 @@
 # terraform-provider-kubeflow-pipelines
 Terraform provider for Kubeflow Pipelines API
 
-![](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/workflows/test/badge.svg)
+[![tests](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/workflows/tests/badge.svg?branch=master)](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/actions?query=workflow%3Atests)
 
 ## Requirements
 
