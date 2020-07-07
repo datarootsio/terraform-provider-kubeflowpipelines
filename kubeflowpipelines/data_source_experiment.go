@@ -49,6 +49,7 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 		for _, item := range resp.Payload.Experiments {
 			if item.Name == name {
 				d.SetId(item.ID)
+				d.Set("name",item.Name)
 				experimentFound = true
 				break
 			}
@@ -63,7 +64,7 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 			Context: context,
 		}
 
-		_, err := client.ExperimentService.GetExperiment(&experimentParams, nil)
+		resp, err := client.ExperimentService.GetExperiment(&experimentParams, nil)
 		if err != nil {
 			if strings.Contains(err.Error(), "404") {
 				d.SetId("")
@@ -71,6 +72,8 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 			}
 			return fmt.Errorf("unable to get experiment: %s", err)
 		}
+		d.SetId(resp.Payload.ID)
+		d.Set("name",resp.Payload.Name)
 	}
 	return nil
 }
