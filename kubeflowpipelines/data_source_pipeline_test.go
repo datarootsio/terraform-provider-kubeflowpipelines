@@ -17,8 +17,7 @@ func TestAccDataSourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceKubeflowPipelinesPipeline,
-				testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName),
+				Config: testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "name", pipelineName),
 					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", pipelineName)),
