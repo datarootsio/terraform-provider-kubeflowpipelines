@@ -41,10 +41,6 @@ func testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName string) string
 	encoded := base64.StdEncoding.EncodeToString(content)
 
 	return fmt.Sprintf(`
-data "local_file" "pipeline_yaml" {
-	filename = "${path.module}/pipeline.yaml"
-}
-
 resource "kubeflowpipelines_pipeline" "test" {
   name          = "%s"
   description   = "Description %s"
