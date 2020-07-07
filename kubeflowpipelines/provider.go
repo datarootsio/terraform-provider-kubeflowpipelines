@@ -24,6 +24,7 @@ func Provider() terraform.ResourceProvider {
 
 		DataSourcesMap: map[string]*schema.Resource{
 			"kubeflowpipelines_experiment": dataSourceKubeflowPipelinesExperiment(),
+			"kubeflowpipelines_pipeline":   dataSourceKubeflowPipelinesPipeline(),
 		},
 	}
 
