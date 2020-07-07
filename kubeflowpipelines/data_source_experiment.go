@@ -49,8 +49,8 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 		for _, item := range resp.Payload.Experiments {
 			if item.Name == name {
 				d.SetId(item.ID)
-				d.Set("name",item.Name)
-				d.Set("description",item.Description)
+				d.Set("name", item.Name)
+				d.Set("description", item.Description)
 				experimentFound = true
 				break
 			}
@@ -74,8 +74,8 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 			return fmt.Errorf("unable to get experiment: %s", err)
 		}
 		d.SetId(resp.Payload.ID)
-		d.Set("name",resp.Payload.Name)
-		d.Set("description",resp.Payload.Description)
+		d.Set("name", resp.Payload.Name)
+		d.Set("description", resp.Payload.Description)
 	}
 	return nil
 }
