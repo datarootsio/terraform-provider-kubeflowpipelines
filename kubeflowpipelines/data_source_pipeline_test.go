@@ -1,7 +1,11 @@
 package kubeflowpipelines
 
 import (
+	"bufio"
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
@@ -28,6 +32,14 @@ func TestAccDataSourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 }
 
 func testAccDataSourceKubeflowPipelinesPipelineBasic(pipelineName string) string {
+	f, _ := os.Open("./tests/pipeline.yaml")
+	// Read entire JPG into byte slice.
+	reader := bufio.NewReader(f)
+	content, _ := ioutil.ReadAll(reader)
+
+	// Encode as base64.
+	encoded := base64.StdEncoding.EncodeToString(content)
+
 	return fmt.Sprintf(`
 data "local_file" "pipeline_yaml" {
 	filename = "${path.module}/pipeline.yaml"
@@ -36,11 +48,11 @@ data "local_file" "pipeline_yaml" {
 resource "kubeflowpipelines_pipeline" "test" {
   name          = "%s"
   description   = "Description %s"
-  file_base64   = data.local_file.pipeline_yaml.content_base64
+  file_base64   = %s
 }
 
 data "kubeflowpipelines_pipeline" "test" {
   id = kubeflowpipelines_pipeline.test.id
 }
-`, pipelineName, pipelineName)
+`, pipelineName, pipelineName, encoded)
 }
