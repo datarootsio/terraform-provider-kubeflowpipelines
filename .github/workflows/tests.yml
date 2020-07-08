@@ -59,6 +59,23 @@ jobs:
           KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
           while [[ "$(kubectl get pod -n kubeflow -l app=ml-pipeline | grep Running | wc -l)" -ne "1" ]]; do echo "Waiting for service to be available";  sleep 5; done
+
+      - name: "Run acceptance tests"
+        env:
+          KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+        run: |
           kubectl port-forward svc/ml-pipeline -n kubeflow 8080:8888 &
           sleep 10;
           make testacc
+
+      - name: Convert coverage to lcov
+        uses: jandelgado/gcov2lcov-action@v1.0.0
+        with:
+            infile: coverage.out
+            outfile: coverage.lcov
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1.0.1
+        with:
+            github-token: ${{ secrets.github_token }}
+            path-to-lcov: coverage.lcov

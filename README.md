@@ -3,6 +3,8 @@ Terraform provider for Kubeflow Pipelines API
 
 [![tests](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/workflows/tests/badge.svg?branch=master)](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/actions?query=workflow%3Atests)
 
+[![Coverage Status](https://coveralls.io/repos/github/datarootsio/terraform-provider-kubeflowpipelines/badge.svg)](https://coveralls.io/github/datarootsio/terraform-provider-kubeflowpipelines)
+
 ## Requirements
 
 -	[Terraform](https://www.terraform.io/downloads.html) >= 0.12.x
