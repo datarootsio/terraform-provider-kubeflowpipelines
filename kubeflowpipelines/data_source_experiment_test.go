@@ -41,7 +41,7 @@ data "kubeflowpipelines_experiment" "test" {
 }
 
 func TestAccDataSourceKubeflowPipelinesExperiment_name(t *testing.T) {
-	resourceName := "data.kubeflowpipelines_experiment.test"
+	resourceName := "data.kubeflowpipelines_experiment.test_name"
 	experimentName := acctest.RandString(6)
 
 	resource.Test(t, resource.TestCase{
@@ -61,12 +61,12 @@ func TestAccDataSourceKubeflowPipelinesExperiment_name(t *testing.T) {
 
 func testAccDataSourceKubeflowPipelinesExperimentName(experimentName string) string {
 	return fmt.Sprintf(`
-resource "kubeflowpipelines_experiment" "test" {
+resource "kubeflowpipelines_experiment" "test_name" {
   name        = "%s"
   description = "Description %s"
 }
 
-data "kubeflowpipelines_experiment" "test" {
+data "kubeflowpipelines_experiment" "test_name" {
   name = "%s"
 }
 `, experimentName, experimentName, experimentName)
