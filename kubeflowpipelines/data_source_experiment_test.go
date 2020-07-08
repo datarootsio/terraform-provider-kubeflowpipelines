@@ -10,6 +10,7 @@ import (
 
 func TestAccDataSourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 	resourceName := "data.kubeflowpipelines_experiment.test"
+	resourceWithName := "data.kubeflowpipelines_experiment.test_name"
 	experimentName := acctest.RandString(6)
 
 	resource.Test(t, resource.TestCase{
@@ -21,6 +22,8 @@ func TestAccDataSourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "name", experimentName),
 					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", experimentName)),
+					resource.TestCheckResourceAttr(resourceName, "resourceWithName", experimentName),
+					resource.TestCheckResourceAttr(resourceName, "resourceWithName", fmt.Sprintf("Description %s", experimentName)),
 				),
 			},
 		},
@@ -37,37 +40,9 @@ resource "kubeflowpipelines_experiment" "test" {
 data "kubeflowpipelines_experiment" "test" {
   id = kubeflowpipelines_experiment.test.id
 }
-`, experimentName, experimentName)
-}
-
-func TestAccDataSourceKubeflowPipelinesExperiment_name(t *testing.T) {
-	resourceName := "data.kubeflowpipelines_experiment.test_name"
-	experimentName := acctest.RandString(6)
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccDataSourceKubeflowPipelinesExperimentName(experimentName),
-				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", experimentName),
-					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", experimentName)),
-				),
-			},
-		},
-	})
-}
-
-func testAccDataSourceKubeflowPipelinesExperimentName(experimentName string) string {
-	return fmt.Sprintf(`
-resource "kubeflowpipelines_experiment" "test_name" {
-  name        = "%s"
-  description = "Description %s"
-}
 
 data "kubeflowpipelines_experiment" "test_name" {
-  name = "%s"
+	name = "%s"
 }
 `, experimentName, experimentName, experimentName)
 }
