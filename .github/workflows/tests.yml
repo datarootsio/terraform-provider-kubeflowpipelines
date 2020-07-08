@@ -66,7 +66,7 @@ jobs:
         run: |
           kubectl port-forward svc/ml-pipeline -n kubeflow 8080:8888 &
           sleep 10;
-          TF_LOG=debug make testacc
+          make testacc
 
       - name: Convert coverage to lcov
         uses: jandelgado/gcov2lcov-action@v1.0.0
