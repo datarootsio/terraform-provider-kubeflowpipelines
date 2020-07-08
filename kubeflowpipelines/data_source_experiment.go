@@ -3,7 +3,6 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
-	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -52,8 +51,6 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 
 		for _, item := range resp.Payload.Experiments {
 			if item.Name == name {
-				log.Printf("[INFO] Item found: %s", item.Name)
-				log.Printf("[INFO] Item found: %s", item.Description)
 				d.SetId(item.ID)
 				d.Set("name", item.Name)
 				d.Set("description", item.Description)

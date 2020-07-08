@@ -73,7 +73,7 @@ resource "kubeflowpipelines_pipeline" "test_name" {
 }
 
 data "kubeflowpipelines_pipeline" "test_name" {
-  name = "%s"
+  name = kubeflowpipelines_pipeline.test.name
 }
 `, pipelineName, pipelineName, pipelineName)
 }
