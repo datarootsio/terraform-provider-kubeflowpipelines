@@ -59,6 +59,11 @@ jobs:
           KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
           while [[ "$(kubectl get pod -n kubeflow -l app=ml-pipeline | grep Running | wc -l)" -ne "1" ]]; do echo "Waiting for service to be available";  sleep 5; done
+
+      - name: "Run acceptance tests"
+        env:
+          KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
+        run: |
           kubectl port-forward svc/ml-pipeline -n kubeflow 8080:8888 &
           sleep 10;
           make testacc
