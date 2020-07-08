@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
