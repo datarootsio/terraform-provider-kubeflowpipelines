@@ -22,8 +22,8 @@ func TestAccDataSourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "name", experimentName),
 					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", experimentName)),
-					resource.TestCheckResourceAttr(resourceName, "resourceWithName", experimentName),
-					resource.TestCheckResourceAttr(resourceName, "resourceWithName", fmt.Sprintf("Description %s", experimentName)),
+					resource.TestCheckResourceAttr(resourceWithName, "name", experimentName),
+					resource.TestCheckResourceAttr(resourceWithName, "description", fmt.Sprintf("Description %s", experimentName)),
 				),
 			},
 		},
