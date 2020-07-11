@@ -2,6 +2,7 @@ package kubeflowpipelines
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
@@ -78,11 +79,11 @@ func TestAccDataSourceKubeflowPipelinesExperiment_missing(t *testing.T) {
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceKubeflowPipelinesExperimentMissingName(),
+				Config:      testAccDataSourceKubeflowPipelinesExperimentMissingName(),
 				ExpectError: regexp.MustCompile("Unable to find this name"),
 			},
 			{
-				Config: testAccDataSourceKubeflowPipelinesExperimentMissinID(),
+				Config:      testAccDataSourceKubeflowPipelinesExperimentMissinID(),
 				ExpectError: regexp.MustCompile("Unable to find this ID"),
 			},
 		},
