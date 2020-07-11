@@ -80,11 +80,11 @@ func TestAccDataSourceKubeflowPipelinesExperiment_missing(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccDataSourceKubeflowPipelinesExperimentMissingName(),
-				ExpectError: regexp.MustCompile("Unable to find this name"),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get experiment: non_existant"),
 			},
 			{
 				Config:      testAccDataSourceKubeflowPipelinesExperimentMissingID(),
-				ExpectError: regexp.MustCompile("Unable to find this ID"),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get experiment: id-abc"),
 			},
 		},
 	})
@@ -93,7 +93,7 @@ func TestAccDataSourceKubeflowPipelinesExperiment_missing(t *testing.T) {
 func testAccDataSourceKubeflowPipelinesExperimentMissingID() string {
 	return fmt.Sprintf(`
 data "kubeflowpipelines_experiment" "test_missing" {
-  id = "non_existant"
+  id = "id-abc"
 }
 `)
 }
