@@ -71,3 +71,36 @@ data "kubeflowpipelines_experiment" "test_name" {
 }
 `, experimentName, experimentName)
 }
+
+func TestAccDataSourceKubeflowPipelinesExperiment_missing(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataSourceKubeflowPipelinesExperimentMissingName(),
+				ExpectError: regexp.MustCompile("Unable to find this name"),
+			},
+			{
+				Config: testAccDataSourceKubeflowPipelinesExperimentMissinID(),
+				ExpectError: regexp.MustCompile("Unable to find this ID"),
+			},
+		},
+	})
+}
+
+func testAccDataSourceKubeflowPipelinesExperimentMissingID() string {
+	return fmt.Sprintf(`
+data "kubeflowpipelines_experiment" "test_missing" {
+  id = "non_existant"
+}
+`)
+}
+
+func testAccDataSourceKubeflowPipelinesExperimentMissingName() string {
+	return fmt.Sprintf(`
+data "kubeflowpipelines_experiment" "test_missing_with_name" {
+  name = "non_existant"
+}
+`)
+}
