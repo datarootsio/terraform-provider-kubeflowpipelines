@@ -83,7 +83,7 @@ func TestAccDataSourceKubeflowPipelinesExperiment_missing(t *testing.T) {
 				ExpectError: regexp.MustCompile("Unable to find this name"),
 			},
 			{
-				Config:      testAccDataSourceKubeflowPipelinesExperimentMissinID(),
+				Config:      testAccDataSourceKubeflowPipelinesExperimentMissingID(),
 				ExpectError: regexp.MustCompile("Unable to find this ID"),
 			},
 		},
