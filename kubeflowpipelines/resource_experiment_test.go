@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"testing"
+	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
@@ -41,11 +42,7 @@ func TestAccResourceKubeflowPipelinesExperiment_destroy_before(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccResourceKubeflowPipelinesExperimentBasic(experimentName),
-				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", experimentName),
-					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", experimentName)),
-					testAccDeleteKubeflowPipelineExperiment(resourceName),
-				),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: non_existant"),
 			},
 		},
 	})
