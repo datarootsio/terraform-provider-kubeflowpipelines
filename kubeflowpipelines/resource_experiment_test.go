@@ -79,7 +79,6 @@ func testAccResourceKubeflowPipelinesExperimentDestroy(s *terraform.State) error
 		name := rs.Primary.Attributes["name"]
 
 		client := testAccProvider.Meta().(*Meta).Experiment
-		ctx := testAccProvider.Meta().(*Meta).Context
 
 		resp, err := client.ExperimentService.ListExperiment(nil, nil)
 		if err != nil {
