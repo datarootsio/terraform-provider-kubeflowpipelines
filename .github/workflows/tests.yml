@@ -34,7 +34,7 @@ jobs:
       - name: "go providerlint"
         run: |
           go get github.com/bflad/tfproviderlint/cmd/tfproviderlint
-          tfproviderlint ./...
+          $GOPATH/bin/tfproviderlint ./...
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v1
