@@ -85,6 +85,7 @@ func resourceKubeflowPipelinesRunCreate(d *schema.ResourceData, meta interface{}
 	serviceAccount := d.Get("service_account").(string)
 	experimentId := d.Get("experiment_id").(string)
 	pipelineVersionID, pipelineSpec, err := runExpandPipelineSpec(meta, d.Get("pipeline_spec").([]interface{}))
+	statePipelineSpec := d.Get("pipeline_spec").([]interface{}) 
 
 	if err != nil {
 		return fmt.Errorf("unable to get pipeline: %s", err)
@@ -136,8 +137,7 @@ func resourceKubeflowPipelinesRunCreate(d *schema.ResourceData, meta interface{}
 	d.Set("name", resp.Payload.Run.Name)
 	d.Set("description", resp.Payload.Run.Description)
 	d.Set("created_at", time.Time(resp.Payload.Run.CreatedAt).Format(time.RFC3339))
-	d.Set("resource_references", resp.Payload.Run.ResourceReferences)
-	d.Set("pipeline_spec", pipelineSpec)
+	d.Set("pipeline_spec", statePipelineSpec)
 	d.Set("experiment_id", experimentId)
 	d.Set("service_account", serviceAccount)
 
