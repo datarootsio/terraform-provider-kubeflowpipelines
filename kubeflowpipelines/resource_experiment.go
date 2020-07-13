@@ -34,14 +34,6 @@ func resourceKubeflowPipelinesExperiment() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"storage_state": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-			"resources_reference": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
 		},
 	}
 }
@@ -72,8 +64,6 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
 	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
-	d.Set("resource_references", resp.Payload.ResourceReferences)
-	d.Set("storage_state", resp.Payload.StorageState)
 	d.SetId(resp.Payload.ID)
 
 	return resourceKubeflowPipelinesExperimentRead(d, meta)
@@ -103,8 +93,6 @@ func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interf
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
 	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
-	d.Set("resource_references", resp.Payload.ResourceReferences)
-	d.Set("storage_state", resp.Payload.StorageState)
 
 	return nil
 }
