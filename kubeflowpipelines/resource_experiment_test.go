@@ -77,10 +77,9 @@ func testAccResourceKubeflowPipelinesExperimentDestroy(s *terraform.State) error
 		}
 
 		name := rs.Primary.Attributes["name"]
-		description := rs.Primary.Attributes["description"]
 
 		client := testAccProvider.Meta().(*Meta).Experiment
-		ctx := testAccProvider.Meta().(*Meta).StopContext
+		ctx := testAccProvider.Meta().(*Meta).Context
 
 		resp, err := client.ExperimentService.ListExperiment(nil, nil)
 		if err != nil {
@@ -91,9 +90,6 @@ func testAccResourceKubeflowPipelinesExperimentDestroy(s *terraform.State) error
 
 		for _, item := range resp.Payload.Experiments {
 			if item.Name == name {
-				d.SetId(item.ID)
-				d.Set("name", item.Name)
-				d.Set("description", item.Description)
 				experimentFound = true
 				break
 			}
