@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/Azure/go-autorest/autorest v0.10.2
+	github.com/bflad/tfproviderlint v0.14.0 // indirect
 	github.com/go-openapi/runtime v0.0.0-20181031204026-aadb2cc7b886
 	github.com/go-openapi/strfmt v0.17.0
 	github.com/hashicorp/terraform v0.12.26

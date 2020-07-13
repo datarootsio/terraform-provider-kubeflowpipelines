@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -52,7 +53,6 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 			"max_concurrency": {
 				Type:         schema.TypeInt,
@@ -170,7 +170,9 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 	maxConcurrency := int64(d.Get("max_concurrency").(int))
 	experimentId := d.Get("experiment_id").(string)
 
+	statePipelineSpec := d.Get("pipeline_spec").([]interface{})
 	pipelineSpec := jobExpandPipelineSpec(d.Get("pipeline_spec").([]interface{}))
+	stateTrigger := d.Get("trigger").([]interface{})
 	trigger := expandTrigger(d.Get("trigger").([]interface{}))
 
 	apiJob := job_model.APIJob{
@@ -214,10 +216,9 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
-	d.Set("resource_references", resp.Payload.ResourceReferences)
-	d.Set("trigger", trigger)
-	d.Set("pipeline_spec", pipelineSpec)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
+	d.Set("trigger", stateTrigger)
+	d.Set("pipeline_spec", statePipelineSpec)
 	d.Set("enabled", enabled)
 	d.Set("no_catchup", noCatchup)
 	d.Set("experiment_id", experimentId)
@@ -252,7 +253,7 @@ func resourceKubeflowPipelinesJobRead(d *schema.ResourceData, meta interface{}) 
 	d.SetId(resp.Payload.ID)
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 
 	return nil
 }

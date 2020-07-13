@@ -2,9 +2,9 @@ package kubeflowpipelines
 
 import (
 	"fmt"
-	"testing"
 	"regexp"
-	
+	"testing"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 )
@@ -106,17 +106,17 @@ func TestAccDataSourceKubeflowPipelinesPipeline_missingname(t *testing.T) {
 }
 
 func testAccDataSourceKubeflowPipelinesPipelineMissingID() string {
-	return fmt.Sprintf(`
+	return `
 data "kubeflowpipelines_pipeline" "test_missing" {
   id = "id-abc"
 }
-`)
+`
 }
 
 func testAccDataSourceKubeflowPipelinesPipelineMissingName() string {
-	return fmt.Sprintf(`
+	return `
 data "kubeflowpipelines_pipeline" "test_missing_with_name" {
   name = "non_existant"
 }
-`)
+`
 }

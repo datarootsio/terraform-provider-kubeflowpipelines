@@ -31,6 +31,11 @@ jobs:
       - name: "go vet"
         run: go vet ./...
 
+      - name: "go providerlint"
+        run: |
+          go get github.com/bflad/tfproviderlint/cmd/tfproviderlint
+          ~/go/bin/tfproviderlint ./...
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v1
         with:
@@ -65,7 +70,7 @@ jobs:
           KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
           kubectl port-forward svc/ml-pipeline -n kubeflow 8080:8888 &
-          sleep 10;
+          while ! [[ $(curl -ss http://localhost:8080/apis/v1beta1/experiments) ]]; do echo "Waiting for service to be available";  sleep 5; done
           make testacc
 
       - name: Convert coverage to lcov

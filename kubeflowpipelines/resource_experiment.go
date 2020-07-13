@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -32,17 +33,6 @@ func resourceKubeflowPipelinesExperiment() *schema.Resource {
 			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
-			},
-			"storage_state": {
-				Type:     schema.TypeString,
-				Computed: true,
-				ForceNew: true,
-			},
-			"resources_reference": {
-				Type:     schema.TypeString,
-				Computed: true,
-				ForceNew: true,
 			},
 		},
 	}
@@ -73,9 +63,7 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
-	d.Set("resource_references", resp.Payload.ResourceReferences)
-	d.Set("storage_state", resp.Payload.StorageState)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 	d.SetId(resp.Payload.ID)
 
 	return resourceKubeflowPipelinesExperimentRead(d, meta)
@@ -104,9 +92,7 @@ func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interf
 	d.SetId(resp.Payload.ID)
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
-	d.Set("resource_references", resp.Payload.ResourceReferences)
-	d.Set("storage_state", resp.Payload.StorageState)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 
 	return nil
 }
