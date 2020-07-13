@@ -2,7 +2,6 @@ package kubeflowpipelines
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -70,11 +69,7 @@ func dataSourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interf
 
 		resp, err := client.PipelineService.GetPipeline(&pipelineParams, nil)
 		if err != nil {
-			if strings.Contains(err.Error(), "404") {
-				d.SetId("")
-				return nil
-			}
-			return fmt.Errorf("unable to get pipeline: %s", err)
+			return fmt.Errorf("unable to get pipeline: %s", id)
 		}
 
 		d.SetId(resp.Payload.ID)

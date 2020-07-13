@@ -3,7 +3,8 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"testing"
-
+	"regexp"
+	
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 )
@@ -76,4 +77,46 @@ data "kubeflowpipelines_pipeline" "test_name" {
   name = kubeflowpipelines_pipeline.test_name.name
 }
 `, pipelineName, pipelineName)
+}
+
+func TestAccDataSourceKubeflowPipelinesPipeline_missingid(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config:      testAccDataSourceKubeflowPipelinesPipelineMissingID(),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: id-abc"),
+			},
+		},
+	})
+}
+
+func TestAccDataSourceKubeflowPipelinesPipeline_missingname(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config:      testAccDataSourceKubeflowPipelinesPipelineMissingName(),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: non_existant"),
+			},
+		},
+	})
+}
+
+func testAccDataSourceKubeflowPipelinesPipelineMissingID() string {
+	return fmt.Sprintf(`
+data "kubeflowpipelines_pipeline" "test_missing" {
+  id = "id-abc"
+}
+`)
+}
+
+func testAccDataSourceKubeflowPipelinesPipelineMissingName() string {
+	return fmt.Sprintf(`
+data "kubeflowpipelines_pipeline" "test_missing_with_name" {
+  name = "non_existant"
+}
+`)
 }
