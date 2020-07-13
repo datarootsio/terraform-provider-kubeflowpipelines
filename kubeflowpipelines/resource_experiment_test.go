@@ -2,8 +2,8 @@ package kubeflowpipelines
 
 import (
 	"fmt"
-	"testing"
 	"regexp"
+	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
@@ -41,7 +41,7 @@ func TestAccResourceKubeflowPipelinesExperiment_destroy_before(t *testing.T) {
 		Providers:    testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccResourceKubeflowPipelinesExperimentBasic(experimentName),
+				Config:      testAccResourceKubeflowPipelinesExperimentBasic(experimentName),
 				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: non_existant"),
 			},
 		},
