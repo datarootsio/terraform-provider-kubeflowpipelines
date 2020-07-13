@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -46,7 +47,6 @@ func resourceKubeflowPipelinesRun() *schema.Resource {
 			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 			"pipeline_spec": {
 				Type:     schema.TypeList,
@@ -135,7 +135,7 @@ func resourceKubeflowPipelinesRunCreate(d *schema.ResourceData, meta interface{}
 
 	d.Set("name", resp.Payload.Run.Name)
 	d.Set("description", resp.Payload.Run.Description)
-	d.Set("created_at", resp.Payload.Run.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.Run.CreatedAt).Format(time.RFC3339))
 	d.Set("resource_references", resp.Payload.Run.ResourceReferences)
 	d.Set("pipeline_spec", pipelineSpec)
 	d.Set("experiment_id", experimentId)
@@ -169,7 +169,7 @@ func resourceKubeflowPipelinesRunRead(d *schema.ResourceData, meta interface{}) 
 	d.SetId(resp.Payload.Run.ID)
 	d.Set("name", resp.Payload.Run.Name)
 	d.Set("description", resp.Payload.Run.Description)
-	d.Set("created_at", resp.Payload.Run.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.Run.CreatedAt).Format(time.RFC3339))
 
 	return nil
 }

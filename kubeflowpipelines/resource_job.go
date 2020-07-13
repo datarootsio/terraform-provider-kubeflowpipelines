@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -52,7 +53,6 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 			"max_concurrency": {
 				Type:         schema.TypeInt,
@@ -252,7 +252,7 @@ func resourceKubeflowPipelinesJobRead(d *schema.ResourceData, meta interface{}) 
 	d.SetId(resp.Payload.ID)
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 
 	return nil
 }

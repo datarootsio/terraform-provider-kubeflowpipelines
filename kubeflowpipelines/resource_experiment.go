@@ -33,17 +33,14 @@ func resourceKubeflowPipelinesExperiment() *schema.Resource {
 			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 			"storage_state": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 			"resources_reference": {
 				Type:     schema.TypeString,
 				Computed: true,
-				ForceNew: true,
 			},
 		},
 	}
@@ -71,8 +68,6 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 	if err != nil {
 		return fmt.Errorf("unable to create experiment: %s", err)
 	}
-
-
 
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
