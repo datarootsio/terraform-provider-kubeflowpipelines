@@ -100,17 +100,17 @@ func TestAccDataSourceKubeflowPipelinesExperiment_missingname(t *testing.T) {
 }
 
 func testAccDataSourceKubeflowPipelinesExperimentMissingID() string {
-	return fmt.Sprintf(`
+	return `
 data "kubeflowpipelines_experiment" "test_missing" {
   id = "id-abc"
 }
-`)
+`
 }
 
 func testAccDataSourceKubeflowPipelinesExperimentMissingName() string {
-	return fmt.Sprintf(`
+	return `
 data "kubeflowpipelines_experiment" "test_missing_with_name" {
   name = "non_existant"
 }
-`)
+`
 }

@@ -14,8 +14,9 @@ func TestAccResourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 	experimentName := acctest.RandString(6)
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		PreCheck:     func() { testAccPreCheck(t) },
+		CheckDestroy: testAccResourceKubeflowPipelinesExperimentDestroy,
+		Providers:    testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccResourceKubeflowPipelinesExperimentBasic(experimentName),
@@ -29,38 +30,6 @@ func TestAccResourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 }
 
 func testAccResourceKubeflowPipelinesExperimentBasic(experimentName string) string {
-	return fmt.Sprintf(`
-resource "kubeflowpipelines_experiment" "test" {
-  name        = "%s"
-  description = "Description %s"
-}
-
-data "kubeflowpipelines_experiment" "test" {
-  id = kubeflowpipelines_experiment.test.id
-}
-`, experimentName, experimentName)
-}
-
-func TestAccResourceKubeflowPipelinesExperiment_name(t *testing.T) {
-	resourceName := "data.kubeflowpipelines_experiment.test_name"
-	experimentName := acctest.RandString(6)
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccResourceKubeflowPipelinesExperimentName(experimentName),
-				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", experimentName),
-					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", experimentName)),
-				),
-			},
-		},
-	})
-}
-
-func testAccResourceKubeflowPipelinesExperimentName(experimentName string) string {
 	return fmt.Sprintf(`
 resource "kubeflowpipelines_experiment" "test_name" {
   name        = "%s"
