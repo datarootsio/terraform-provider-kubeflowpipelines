@@ -29,15 +29,6 @@ func TestAccResourceKubeflowPipelinesExperiment_basic(t *testing.T) {
 	})
 }
 
-func testAccResourceKubeflowPipelinesExperimentBasic(experimentName string) string {
-	return fmt.Sprintf(`
-resource "kubeflowpipelines_experiment" "test_name" {
-  name        = "%s"
-  description = "Description %s"
-}
-`, experimentName, experimentName)
-}
-
 func testAccResourceKubeflowPipelinesExperimentDestroy(s *terraform.State) error {
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "kubeflowpipelines_experiment" {
@@ -68,4 +59,14 @@ func testAccResourceKubeflowPipelinesExperimentDestroy(s *terraform.State) error
 	}
 
 	return nil
+}
+
+
+func testAccResourceKubeflowPipelinesExperimentBasic(experimentName string) string {
+	return fmt.Sprintf(`
+resource "kubeflowpipelines_experiment" "test" {
+  name        = "%s"
+  description = "Description %s"
+}
+`, experimentName, experimentName)
 }
