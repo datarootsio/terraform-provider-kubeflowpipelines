@@ -3,6 +3,7 @@ package kubeflowpipelines
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -71,9 +72,11 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 		return fmt.Errorf("unable to create experiment: %s", err)
 	}
 
+
+
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 	d.Set("resource_references", resp.Payload.ResourceReferences)
 	d.Set("storage_state", resp.Payload.StorageState)
 	d.SetId(resp.Payload.ID)
@@ -104,7 +107,7 @@ func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interf
 	d.SetId(resp.Payload.ID)
 	d.Set("name", resp.Payload.Name)
 	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", resp.Payload.CreatedAt)
+	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
 	d.Set("resource_references", resp.Payload.ResourceReferences)
 	d.Set("storage_state", resp.Payload.StorageState)
 
