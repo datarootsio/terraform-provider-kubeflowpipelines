@@ -34,10 +34,14 @@ func dataSourceKubeflowPipelinesExperiment() *schema.Resource {
 
 func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interface{}) error {
 
-	id, name, description, _, err := readExperiment(meta, d.Get("name").(string), d.Get("id").(string))
+	id, name, description, _, err := readExperiment(meta, d.Get("id").(string), d.Get("name").(string))
 
 	if err != nil {
-		return fmt.Errorf("unable to get experiment: %s", err)
+		return fmt.Errorf("%s", err)
+	}
+
+	if id == "" {
+		return fmt.Errorf("unable to get experiment: %s", d.Get("id").(string))
 	}
 
 	d.SetId(id)
