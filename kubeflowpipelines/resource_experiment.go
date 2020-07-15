@@ -69,16 +69,16 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 }
 
 func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interface{}) error {
-	id, name, description, createdAt, err := readExperiment(meta, d.Id(), "")
+	experiment, err := readExperiment(meta, d.Id(), "")
 
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
 
-	d.SetId(id)
-	d.Set("name", name)
-	d.Set("description", description)
-	d.Set("created_at", createdAt)
+	d.SetId(experiment.ID)
+	d.Set("name", experiment.Name)
+	d.Set("description", experiment.Description)
+	d.Set("created_at", experiment.CreatedAt)
 
 	return nil
 }

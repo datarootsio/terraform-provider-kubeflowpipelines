@@ -1,7 +1,7 @@
 # terraform-provider-kubeflow-pipelines
 Terraform provider for Kubeflow Pipelines API
 
-[![tests](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/workflows/tests/badge.svg?branch=master)](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/actions?query=workflow%3Atests) [![Coverage Status](https://coveralls.io/repos/github/datarootsio/terraform-provider-kubeflowpipelines/badge.svg)](https://coveralls.io/github/datarootsio/terraform-provider-kubeflowpipelines)
+[![maintained by dataroots](https://img.shields.io/badge/maintained%20by-dataroots-%2300b189)](https://dataroots.io) [![tests](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/workflows/tests/badge.svg?branch=master)](https://github.com/datarootsio/terraform-provider-kubeflowpipelines/actions?query=workflow%3Atests) [![Go Report Card](https://goreportcard.com/badge/github.com/datarootsio/terraform-provider-kubeflowpipelines)](https://goreportcard.com/report/github.com/datarootsio/terraform-provider-kubeflowpipelines) [![Coverage Status](https://coveralls.io/repos/github/datarootsio/terraform-provider-kubeflowpipelines/badge.svg)](https://coveralls.io/github/datarootsio/terraform-provider-kubeflowpipelines)
 
 ## Requirements
 

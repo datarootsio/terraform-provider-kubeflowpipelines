@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kubeflow-pipeline-for-test-
+  annotations:
+    {
+      pipelines.kubeflow.org/kfp_sdk_version: 0.5.1,
+      pipelines.kubeflow.org/pipeline_compilation_time: "2020-07-06T13:33:12.513872",
+      pipelines.kubeflow.org/pipeline_spec:
+        '{"description": "This pipeline is a test", "inputs": [{"name": "key"},
+        {"name": "foo"}], "name": "Kubeflow pipeline for test"}',
+    }
+  labels: { pipelines.kubeflow.org/kfp_sdk_version: 0.5.1 }
+spec:
+  entrypoint: kubeflow-pipeline-for-test
+  templates:
+    - name: kubeflow-pipeline-for-test
+      inputs:
+        parameters:
+          - { name: key }
+          - { name: foo }
+      dag:
+        tasks:
+          - name: step-1
+            template: step-1
+            arguments:
+              parameters:
+                - { name: key, value: "{{inputs.parameters.key}}" }
+                - { name: foo, value: "{{inputs.parameters.foo}}" }
+          - name: step-1-2
+            template: step-1-2
+            dependencies: [step-1]
+            arguments:
+              parameters:
+                - { name: key, value: "{{inputs.parameters.key}}" }
+    - name: step-1
+      container:
+        args:
+          [
+            --key,
+            "{{inputs.parameters.key}}",
+            --foo,
+            "{{inputs.parameters.foo}}",
+          ]
+        command: [echo, "'pipeline'"]
+        env:
+          - { name: ENVIRONEMENT, value: superenv }
+        image: hello-world
+        imagePullPolicy: Always
+      inputs:
+        parameters:
+          - { name: key }
+          - { name: foo }
+      metadata:
+        labels: { pipelines.kubeflow.org/pipeline-sdk-type: kfp }
+  arguments:
+    parameters:
+      - { name: key }
+      - { name: foo }
+  serviceAccountName: pipeline-runner
