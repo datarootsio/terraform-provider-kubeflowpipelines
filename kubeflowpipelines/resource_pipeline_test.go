@@ -153,13 +153,3 @@ resource "kubeflowpipelines_pipeline" "test_url" {
 }
 `, pipelineName)
 }
-
-func testAccResourceKubeflowPipelinesPipelineFromURLUpdate(pipelineName string) string {
-	return fmt.Sprintf(`
-resource "kubeflowpipelines_pipeline" "test_url" {
-	name        = "%[1]s"
-	url = "https://raw.githubusercontent.com/datarootsio/terraform-provider-kubeflowpipelines/master/tests/kubeflow_setup/pipeline.yaml"
-	version     = "v0.0.2"
-}
-`, pipelineName)
-}
