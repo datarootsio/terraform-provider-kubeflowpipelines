@@ -36,10 +36,10 @@ func resourceKubeflowPipelinesPipeline() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"description": {
-				Type:         schema.TypeString,
-				ForceNew:     true,
-				Optional:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				Type:          schema.TypeString,
+				ForceNew:      true,
+				Optional:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
 				ConflictsWith: []string{"url"},
 			},
 			"url": {

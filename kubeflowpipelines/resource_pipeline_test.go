@@ -19,7 +19,6 @@ func TestAccResourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 	resourceNameURL := "kubeflowpipelines_pipeline.test"
 	pipelineNameURL := acctest.RandString(6)
 
-
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		CheckDestroy: testAccResourceKubeflowPipelinesPipelineDestroy,
