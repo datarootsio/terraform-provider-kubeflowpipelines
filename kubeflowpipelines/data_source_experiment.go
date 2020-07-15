@@ -40,7 +40,7 @@ func dataSourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta inte
 		return fmt.Errorf("%s", err)
 	}
 
-	if id == "" {
+	if experiment.ID == "" {
 		return fmt.Errorf("unable to get experiment: %s", d.Get("id").(string))
 	}
 
