@@ -187,7 +187,7 @@ func resourceKubeflowPipelinesRunDelete(d *schema.ResourceData, meta interface{}
 
 	_, err := client.RunService.ArchiveRun(&runParams, nil)
 	if err != nil {
-		return fmt.Errorf("unable to delete job: %s", err)
+		return fmt.Errorf("unable to archive run: %s", err)
 	}
 
 	d.SetId("")
