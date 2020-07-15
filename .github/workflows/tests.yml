@@ -71,16 +71,16 @@ jobs:
         run: |
           kubectl port-forward svc/ml-pipeline -n kubeflow 8080:8888 &
           while ! [[ $(curl -ss http://localhost:8080/apis/v1beta1/experiments) ]]; do echo "Waiting for service to be available";  sleep 5; done
-          make testacc
+          TF_LOG=info make testacc
 
       - name: Convert coverage to lcov
         uses: jandelgado/gcov2lcov-action@v1.0.0
         with:
-            infile: coverage.out
-            outfile: coverage.lcov
+          infile: coverage.out
+          outfile: coverage.lcov
 
       - name: Coveralls
         uses: coverallsapp/github-action@v1.0.1
         with:
-            github-token: ${{ secrets.github_token }}
-            path-to-lcov: coverage.lcov
+          github-token: ${{ secrets.github_token }}
+          path-to-lcov: coverage.lcov
