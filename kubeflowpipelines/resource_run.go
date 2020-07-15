@@ -105,7 +105,7 @@ func resourceKubeflowPipelinesRunCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	apiJob.ResourceReferences = []*run_model.APIResourceReference{
-		&run_model.APIResourceReference{
+		{
 			Key: &run_model.APIResourceKey{
 				ID:   pipelineVersionID,
 				Type: "PIPELINE_VERSION",

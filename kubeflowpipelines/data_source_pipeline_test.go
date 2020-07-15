@@ -99,7 +99,7 @@ func TestAccDataSourceKubeflowPipelinesPipeline_missingname(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccDataSourceKubeflowPipelinesPipelineMissingName(),
-				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: non_existant"),
+				ExpectError: regexp.MustCompile("errors during refresh: unable to get pipeline: non_existent"),
 			},
 		},
 	})
@@ -116,7 +116,7 @@ data "kubeflowpipelines_pipeline" "test_missing" {
 func testAccDataSourceKubeflowPipelinesPipelineMissingName() string {
 	return `
 data "kubeflowpipelines_pipeline" "test_missing_with_name" {
-  name = "non_existant"
+  name = "non_existent"
 }
 `
 }

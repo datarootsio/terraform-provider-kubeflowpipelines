@@ -194,7 +194,7 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 
 	if experimentId != "" {
 		apiJob.ResourceReferences = []*job_model.APIResourceReference{
-			&job_model.APIResourceReference{
+			{
 				Key: &job_model.APIResourceKey{
 					ID:   experimentId,
 					Type: "EXPERIMENT",
@@ -323,45 +323,45 @@ func expandTrigger(input []interface{}) *job_model.APITrigger {
 		vv := v.([]interface{})
 		cron := vv[0].(map[string]interface{})
 
-		cron_result := job_model.APICronSchedule{}
+		cronResult := job_model.APICronSchedule{}
 
 		if w, ok := cron["cron"]; ok {
-			cron_result.Cron = string(w.(string))
+			cronResult.Cron = string(w.(string))
 		}
 
 		if w, ok := cron["start_time"]; ok {
 			date, _ := strfmt.ParseDateTime(string(w.(string)))
-			cron_result.StartTime = date
+			cronResult.StartTime = date
 		}
 
 		if w, ok := cron["end_time"]; ok {
 			date, _ := strfmt.ParseDateTime(string(w.(string)))
-			cron_result.EndTime = date
+			cronResult.EndTime = date
 		}
 
-		result.CronSchedule = &cron_result
+		result.CronSchedule = &cronResult
 
 	} else if v, ok := values["periodic_schedule"]; ok {
 		vv := v.([]interface{})
 		periodic := vv[0].(map[string]interface{})
 
-		periodic_result := job_model.APIPeriodicSchedule{}
+		periodicSchedule := job_model.APIPeriodicSchedule{}
 
 		if w, ok := periodic["cron"]; ok {
-			periodic_result.IntervalSecond = int64(w.(int64))
+			periodicSchedule.IntervalSecond = int64(w.(int64))
 		}
 
 		if w, ok := periodic["start_time"]; ok {
 			date, _ := strfmt.ParseDateTime(string(w.(string)))
-			periodic_result.StartTime = date
+			periodicSchedule.StartTime = date
 		}
 
 		if w, ok := periodic["end_time"]; ok {
 			date, _ := strfmt.ParseDateTime(string(w.(string)))
-			periodic_result.EndTime = date
+			periodicSchedule.EndTime = date
 		}
 
-		result.PeriodicSchedule = &periodic_result
+		result.PeriodicSchedule = &periodicSchedule
 
 	}
 

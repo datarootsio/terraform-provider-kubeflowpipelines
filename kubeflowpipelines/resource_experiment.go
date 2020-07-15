@@ -2,7 +2,6 @@ package kubeflowpipelines
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -70,29 +69,16 @@ func resourceKubeflowPipelinesExperimentCreate(d *schema.ResourceData, meta inte
 }
 
 func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*Meta).Experiment
-	context := meta.(*Meta).Context
+	experiment, err := readExperiment(meta, d.Id(), "")
 
-	id := d.Id()
-
-	experimentParams := experiment_service.GetExperimentParams{
-		ID:      id,
-		Context: context,
-	}
-
-	resp, err := client.ExperimentService.GetExperiment(&experimentParams, nil)
 	if err != nil {
-		if strings.Contains(err.Error(), "404") {
-			d.SetId("")
-			return nil
-		}
-		return fmt.Errorf("unable to get experiment: %s", err)
+		return fmt.Errorf("%s", err)
 	}
 
-	d.SetId(resp.Payload.ID)
-	d.Set("name", resp.Payload.Name)
-	d.Set("description", resp.Payload.Description)
-	d.Set("created_at", time.Time(resp.Payload.CreatedAt).Format(time.RFC3339))
+	d.SetId(experiment.ID)
+	d.Set("name", experiment.Name)
+	d.Set("description", experiment.Description)
+	d.Set("created_at", experiment.CreatedAt)
 
 	return nil
 }
