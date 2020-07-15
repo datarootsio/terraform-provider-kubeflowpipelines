@@ -40,6 +40,7 @@ func resourceKubeflowPipelinesPipeline() *schema.Resource {
 				ForceNew:     true,
 				Optional:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
+				ConflictsWith: []string{"url"},
 			},
 			"url": {
 				Type:         schema.TypeString,
@@ -146,8 +147,6 @@ func kubeflowCreatePipelineFromFile(d *schema.ResourceData, meta interface{}) er
 		return fmt.Errorf("unable to create pipeline: %s", err)
 	}
 
-	d.Set("name", resp.Payload.Name)
-	d.Set("description", resp.Payload.Description)
 	d.SetId(resp.Payload.ID)
 
 	if version != "" {
@@ -230,9 +229,6 @@ func kubeflowCreatePipelineFromUrl(d *schema.ResourceData, meta interface{}) err
 		return fmt.Errorf("unable to create pipeline: %s", err)
 	}
 
-	d.Set("name", resp.Payload.Name)
-	d.Set("description", description)
-	d.Set("url", url)
 	d.SetId(resp.Payload.ID)
 
 	if version != "" {

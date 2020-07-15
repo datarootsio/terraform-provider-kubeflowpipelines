@@ -2,6 +2,7 @@ package kubeflowpipelines
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"testing"
 
@@ -15,6 +16,10 @@ func TestAccResourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 	resourceName := "kubeflowpipelines_pipeline.test"
 	pipelineName := acctest.RandString(6)
 
+	resourceNameURL := "kubeflowpipelines_pipeline.test"
+	pipelineNameURL := acctest.RandString(6)
+
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		CheckDestroy: testAccResourceKubeflowPipelinesPipelineDestroy,
@@ -27,24 +32,10 @@ func TestAccResourceKubeflowPipelinesPipeline_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", pipelineName)),
 				),
 			},
-		},
-	})
-}
-
-func TestAccResourceKubeflowPipelinesPipeline_url(t *testing.T) {
-	resourceName := "kubeflowpipelines_pipeline.test"
-	pipelineName := acctest.RandString(6)
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		CheckDestroy: testAccResourceKubeflowPipelinesPipelineDestroy,
-		Providers:    testAccProviders,
-		Steps: []resource.TestStep{
 			{
-				Config: testAccResourceKubeflowPipelinesPipelineFromURL(pipelineName),
+				Config: testAccResourceKubeflowPipelinesPipelineFromURL(pipelineNameURL),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", pipelineName),
-					resource.TestCheckResourceAttr(resourceName, "description", fmt.Sprintf("Description %s", pipelineName)),
+					resource.TestCheckResourceAttr(resourceNameURL, "name", pipelineNameURL),
 				),
 			},
 		},
@@ -57,7 +48,8 @@ func testAccResourceKubeflowPipelinesPipelineDestroy(s *terraform.State) error {
 			continue
 		}
 
-		id := rs.Primary.Attributes["name"]
+		id := rs.Primary.Attributes["id"]
+		log.Print("id")
 
 		client := testAccProvider.Meta().(*Meta).Pipeline
 		context := testAccProvider.Meta().(*Meta).Context
@@ -99,7 +91,6 @@ func testAccResourceKubeflowPipelinesPipelineFromURL(pipelineName string) string
 	return fmt.Sprintf(`
 resource "kubeflowpipelines_pipeline" "test" {
 	name        = "%[1]s"
-	description = "Description %[1]s"
 	url = "https://raw.githubusercontent.com/datarootsio/terraform-provider-kubeflowpipelines/master/tests/kubeflow_setup/pipeline.yaml"
 	version     = "v0.0.1"
 }
