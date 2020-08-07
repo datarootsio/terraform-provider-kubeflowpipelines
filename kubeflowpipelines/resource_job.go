@@ -73,7 +73,7 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 				ForceNew: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"pipeline_id": {
+						"pipeline_version_id": {
 							Type:         schema.TypeString,
 							Required:     true,
 							ForceNew:     true,
@@ -171,7 +171,7 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 	experimentId := d.Get("experiment_id").(string)
 
 	statePipelineSpec := d.Get("pipeline_spec").([]interface{})
-	pipelineSpec := jobExpandPipelineSpec(d.Get("pipeline_spec").([]interface{}))
+	pipelineVersionID, pipelineSpec := jobExpandPipelineSpec(d.Get("pipeline_spec").([]interface{}))
 	stateTrigger := d.Get("trigger").([]interface{})
 	trigger := expandTrigger(d.Get("trigger").([]interface{}))
 
@@ -192,16 +192,24 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 		apiJob.ServiceAccount = serviceAccount
 	}
 
-	if experimentId != "" {
-		apiJob.ResourceReferences = []*job_model.APIResourceReference{
-			{
-				Key: &job_model.APIResourceKey{
-					ID:   experimentId,
-					Type: "EXPERIMENT",
-				},
-				Relationship: "OWNER",
+	apiJob.ResourceReferences = []*job_model.APIResourceReference{
+		{
+			Key: &job_model.APIResourceKey{
+				ID:   pipelineVersionID,
+				Type: "PIPELINE_VERSION",
 			},
-		}
+			Relationship: "CREATOR",
+		},
+	}
+
+	if experimentId != "" {
+		apiJob.ResourceReferences = append(apiJob.ResourceReferences, &job_model.APIResourceReference{
+			Key: &job_model.APIResourceKey{
+				ID:   experimentId,
+				Type: "EXPERIMENT",
+			},
+			Relationship: "OWNER",
+		})
 	}
 
 	jobParams := job_service.CreateJobParams{
@@ -279,17 +287,19 @@ func resourceKubeflowPipelinesJobDelete(d *schema.ResourceData, meta interface{}
 	return nil
 }
 
-func jobExpandPipelineSpec(input []interface{}) *job_model.APIPipelineSpec {
+func jobExpandPipelineSpec(input []interface{}) (string, *job_model.APIPipelineSpec) {
 	if len(input) == 0 {
-		return nil
+		return "", nil
 	}
 
 	values := input[0].(map[string]interface{})
 
 	result := job_model.APIPipelineSpec{}
 
-	if v, ok := values["pipeline_id"]; ok {
-		result.PipelineID = string(v.(string))
+	pipelineVersionID := ""
+
+	if v, ok := values["pipeline_version_id"]; ok {
+		pipelineVersionID = string(v.(string))
 	}
 
 	if v, ok := values["parameters"]; ok {
@@ -307,7 +317,7 @@ func jobExpandPipelineSpec(input []interface{}) *job_model.APIPipelineSpec {
 		result.Parameters = parameters
 	}
 
-	return &result
+	return pipelineVersionID, &result
 }
 
 func expandTrigger(input []interface{}) *job_model.APITrigger {

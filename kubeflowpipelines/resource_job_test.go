@@ -84,7 +84,7 @@ resource "kubeflowpipelines_job" "test" {
 	no_catchup      = true
 	experiment_id = kubeflowpipelines_experiment.test.id
 	pipeline_spec {
-		pipeline_id = kubeflowpipelines_pipeline.test.id
+		pipeline_version_id = kubeflowpipelines_pipeline.test.version_id
 		parameters = {
 			"key" = "value"
 		}
