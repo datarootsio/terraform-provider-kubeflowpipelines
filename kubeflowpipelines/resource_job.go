@@ -204,13 +204,11 @@ func resourceKubeflowPipelinesJobCreate(d *schema.ResourceData, meta interface{}
 
 	if experimentId != "" {
 		apiJob.ResourceReferences = append(apiJob.ResourceReferences, &job_model.APIResourceReference{
-			{
-				Key: &job_model.APIResourceKey{
-					ID:   experimentId,
-					Type: "EXPERIMENT",
-				},
-				Relationship: "OWNER",
+			Key: &job_model.APIResourceKey{
+				ID:   experimentId,
+				Type: "EXPERIMENT",
 			},
+			Relationship: "OWNER",
 		})
 	}
 
@@ -289,9 +287,9 @@ func resourceKubeflowPipelinesJobDelete(d *schema.ResourceData, meta interface{}
 	return nil
 }
 
-func jobExpandPipelineSpec(input []interface{}) (string,*job_model.APIPipelineSpec) {
+func jobExpandPipelineSpec(input []interface{}) (string, *job_model.APIPipelineSpec) {
 	if len(input) == 0 {
-		return "",nil
+		return "", nil
 	}
 
 	values := input[0].(map[string]interface{})
