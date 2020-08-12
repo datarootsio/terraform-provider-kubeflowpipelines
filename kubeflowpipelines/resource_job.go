@@ -63,7 +63,7 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 			"no_catchup": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  false,
+				Default:  true,
 				ForceNew: true,
 			},
 			"pipeline_spec": {
@@ -95,6 +95,7 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 				MaxItems: 1,
 				Required: true,
 				ForceNew: true,
+                ExactlyOneOf: []string{"cron_schedule", "periodic_schedule"},
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cron_schedule": {
