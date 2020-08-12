@@ -11,7 +11,7 @@ func Provider() terraform.ResourceProvider {
 			"host": {
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("KUBEFLOW_HOST", nil),
+				DefaultFunc: schema.EnvDefaultFunc("KUBEFLOWPIPELINES_HOST", nil),
 			},
 		},
 
