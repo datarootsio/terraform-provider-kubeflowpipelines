@@ -63,4 +63,4 @@ resource "kubeflowpipelines_run" "my_run" {
 
 The following argument is supported in the provider block:
 
-* `host` &mdash; (Required) Kubeflow pipelines API URI. Can be source from the environment variable `KUBEFLOWPIPELINES_HOST`
+* `host` &mdash; (Required) Kubeflow pipelines API URI. Can be sourced from the environment variable `KUBEFLOWPIPELINES_HOST`
