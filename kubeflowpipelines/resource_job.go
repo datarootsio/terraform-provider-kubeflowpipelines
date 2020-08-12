@@ -63,7 +63,7 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 			"no_catchup": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  false,
+				Default:  true,
 				ForceNew: true,
 			},
 			"pipeline_spec": {

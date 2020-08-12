@@ -91,9 +91,9 @@ resource "kubeflowpipelines_job" "test" {
 	}
 	trigger {
 		cron_schedule {
-		start_time = "2020-06-23T00:00:00Z"
-		end_time   = "2030-06-23T00:00:00Z"
-		cron       = "0 10 * * *"
+            start_time = "2020-06-23T00:00:00Z"
+            end_time   = "2030-06-23T00:00:00Z"
+            cron       = "0 10 * * *"
 		}
 	}
 }

@@ -1,6 +1,9 @@
 # Kubeflow Pipelines Provider
 
 Terraform provider for [Kubeflow Pipelines API](https://www.kubeflow.org/docs/pipelines/pipelines-quickstart/).
+
+Developed and validated against kubeflow 1.0.2
+
 ## Example Usage
 
 ```hcl-terraform
