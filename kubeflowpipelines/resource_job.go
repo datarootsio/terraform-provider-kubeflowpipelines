@@ -98,11 +98,11 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cron_schedule": {
-							Type:         schema.TypeList,
-							MaxItems:     1,
-							Optional:     true,
-							ForceNew:     true,
-							ExactlyOneOf: []string{"cron_schedule", "periodic_schedule"},
+							Type:          schema.TypeList,
+							MaxItems:      1,
+							Optional:      true,
+							ForceNew:      true,
+							ConflictsWith: []string{"periodic_schedule"},
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"start_time": {
@@ -126,11 +126,11 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 							},
 						},
 						"periodic_schedule": {
-							Type:         schema.TypeList,
-							MinItems:     1,
-							Optional:     true,
-							ForceNew:     true,
-							ExactlyOneOf: []string{"cron_schedule", "periodic_schedule"},
+							Type:          schema.TypeList,
+							MinItems:      1,
+							Optional:      true,
+							ForceNew:      true,
+							ConflictsWith: []string{"cron_schedule"},
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"start_time": {
