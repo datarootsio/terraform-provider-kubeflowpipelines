@@ -29,7 +29,7 @@ func TestProvider_impl(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) {
-	if v := os.Getenv("KUBEFLOW_HOST"); v == "" {
-		t.Fatal("KUBEFLOW_HOST must be set for acceptance tests")
+	if v := os.Getenv("KUBEFLOWPIPELINES_HOST"); v == "" {
+		t.Fatal("KUBEFLOWPIPELINES_HOST must be set for acceptance tests")
 	}
 }
