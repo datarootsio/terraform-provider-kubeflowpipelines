@@ -91,11 +91,11 @@ func resourceKubeflowPipelinesJob() *schema.Resource {
 				},
 			},
 			"trigger": {
-				Type:     schema.TypeList,
-				MaxItems: 1,
-				Required: true,
-				ForceNew: true,
-                ExactlyOneOf: []string{"cron_schedule", "periodic_schedule"},
+				Type:         schema.TypeList,
+				MaxItems:     1,
+				Required:     true,
+				ForceNew:     true,
+				ExactlyOneOf: []string{"cron_schedule", "periodic_schedule"},
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cron_schedule": {
