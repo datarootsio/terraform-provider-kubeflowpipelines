@@ -84,22 +84,22 @@ func resourceKubeflowPipelinesExperimentRead(d *schema.ResourceData, meta interf
 }
 
 func resourceKubeflowPipelinesExperimentDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*Meta).Experiment
-	context := meta.(*Meta).Context
+	// 	client := meta.(*Meta).Experiment
+	// 	context := meta.(*Meta).Context
 
-	id := d.Id()
+	// 	id := d.Id()
 
-	experimentParams := experiment_service.DeleteExperimentParams{
-		ID:      id,
-		Context: context,
-	}
+	// 	experimentParams := experiment_service.DeleteExperimentParams{
+	// 		ID:      id,
+	// 		Context: context,
+	// 	}
 
-	_, err := client.ExperimentService.DeleteExperiment(&experimentParams, nil)
-	if err != nil {
-		return fmt.Errorf("unable to delete experiment: %s", err)
-	}
+	// 	_, err := client.ExperimentService.DeleteExperiment(&experimentParams, nil)
+	// 	if err != nil {
+	// 		return fmt.Errorf("unable to delete experiment: %s", err)
+	// 	}
 
-	d.SetId("")
+	// 	d.SetId("")
 
 	return nil
 }
