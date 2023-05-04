@@ -334,22 +334,22 @@ func resourceKubeflowPipelinesPipelineRead(d *schema.ResourceData, meta interfac
 }
 
 func resourceKubeflowPipelinesPipelineDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*Meta).Pipeline
-	context := meta.(*Meta).Context
+	// 	client := meta.(*Meta).Pipeline
+	// 	context := meta.(*Meta).Context
 
-	id := d.Id()
+	// 	id := d.Id()
 
-	pipelineParams := pipeline_service.DeletePipelineParams{
-		ID:      id,
-		Context: context,
-	}
+	// 	pipelineParams := pipeline_service.DeletePipelineParams{
+	// 		ID:      id,
+	// 		Context: context,
+	// 	}
 
-	_, err := client.PipelineService.DeletePipeline(&pipelineParams, nil)
-	if err != nil {
-		return fmt.Errorf("unable to delete pipeline: %s", err)
-	}
+	// 	_, err := client.PipelineService.DeletePipeline(&pipelineParams, nil)
+	// 	if err != nil {
+	// 		return fmt.Errorf("unable to delete pipeline: %s", err)
+	// 	}
 
-	d.SetId("")
+	// 	d.SetId("")
 
 	return nil
 }
